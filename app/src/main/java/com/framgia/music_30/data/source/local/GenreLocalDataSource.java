@@ -7,7 +7,7 @@ import com.framgia.music_30.data.source.remote.OnFetchDataJsonListener;
 import com.framgia.music_30.ultil.Constant;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class GenreLocalDataSource implements GenreDataSource.Local {
     private static GenreLocalDataSource sInstance;

@@ -45,9 +45,12 @@ public class JsonParseData {
         JSONArray jsonArray = new JSONArray(s);
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject songJson = jsonArray.getJSONObject(i);
-            String name = songJson.getString(Constant.TITLE);
-            String url = songJson.getString(Constant.PERMALINK_URL);
-            songList.add(new Song(name, url));
+            String id = songJson.getString(Constant.ID_SONG);
+            String title = songJson.getString(Constant.TITLE_SONG);
+            String urlPlay = songJson.getString(Constant.STREAM_URL);
+            String urlDownload = songJson.getString(Constant.DOWNLOAD_URL);
+            String imageSong = songJson.getString(Constant.IMAGE_SONG);
+            songList.add(new Song(id,title, imageSong, urlPlay, urlDownload, Constant.TYPE_ONLINE));
         }
         return songList;
     }
