@@ -6,11 +6,12 @@ import com.framgia.music_30.ultil.BasePresenter;
 import java.util.List;
 
 public interface SongGenreContract {
-    interface View{
+    interface View {
         void onGetDataSuccess(List<Song> songList);
+        void onGetDataError(String error);
     }
 
-    interface Presenter extends BasePresenter<View>{
+    interface Presenter extends BasePresenter<View> {
         void getSong(String genre);
     }
 }

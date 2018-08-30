@@ -2,6 +2,7 @@ package com.framgia.music_30.data.source.remote;
 
 import com.framgia.music_30.data.model.Song;
 import com.framgia.music_30.data.source.SongDataSource;
+import com.framgia.music_30.data.source.remote.fetchjson.DataJson;
 
 public class SongRemoteDataSource implements SongDataSource.RemoteDataSource {
     private static SongRemoteDataSource sInstance;
@@ -17,6 +18,8 @@ public class SongRemoteDataSource implements SongDataSource.RemoteDataSource {
     }
 
     @Override
-    public void getData(OnFetchDataJsonListener<Song> listener) {
+    public void getData(String genre, OnFetchDataJsonListener<Song> listener) {
+        new DataJson(listener).getData(genre);
+
     }
 }

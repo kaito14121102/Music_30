@@ -27,6 +27,7 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_genre);
+        getTypeGenre();
     }
 
     private void initData(String genre) {
@@ -43,7 +44,13 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
         Toast.makeText(this, songList.size() + "", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onGetDataError(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+    }
+
     private void getTypeGenre() {
         String genre = getIntent().getStringExtra(TYPE_GENRE);
+        initData(genre);
     }
 }

@@ -4,4 +4,5 @@ import java.util.List;
 
 public interface OnFetchDataJsonListener<T> {
     void onSucess(List<T> data);
+    void onError(Exception exception);
 }
