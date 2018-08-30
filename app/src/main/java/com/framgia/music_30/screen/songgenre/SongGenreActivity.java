@@ -1,15 +1,16 @@
 package com.framgia.music_30.screen.songgenre;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
-import com.framgia.music_30.screen.home.fragment.GenreFragment;
+import com.framgia.music_30.data.source.SongRepository;
+import com.framgia.music_30.data.source.remote.SongRemoteDataSource;
 
 import java.util.List;
 
@@ -26,7 +27,14 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_genre);
-        getTypeGenre();
+    }
+
+    private void initData(String genre) {
+        SongRemoteDataSource remoteDataSource = SongRemoteDataSource.getInstance();
+        SongRepository songRepository = SongRepository.getInstance(remoteDataSource);
+        SongGenrePresenter presenter = new SongGenrePresenter(songRepository);
+        presenter.setView(this);
+        presenter.getSong(genre);
     }
 
     @Override
