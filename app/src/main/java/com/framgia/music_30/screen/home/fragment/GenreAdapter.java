@@ -13,6 +13,7 @@ import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Genre;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> {
 
@@ -45,6 +46,13 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> 
 
     interface OnItemClickListener {
         void onGenreClicked(String typeGenre);
+    }
+
+    public void addData(List<Genre> genres) {
+        if (genres != null) {
+            mGenreArrayList.addAll(genres);
+            notifyDataSetChanged();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

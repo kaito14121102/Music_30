@@ -1,7 +1,6 @@
 package com.framgia.music_30.data.source.remote.fetchjson;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.framgia.music_30.data.model.Song;
 import com.framgia.music_30.data.source.remote.OnFetchDataJsonListener;
