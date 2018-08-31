@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SoundCloud</string>
+    <string name="media_player">Media Player</string>
+    <string name="ALBUM_TITLE">Albums</string>
+    <string name="MYSONGS_TITLE">My Songs</string>
+    <string name="ARTIST_TITLE">Artist</string>
 </resources>
