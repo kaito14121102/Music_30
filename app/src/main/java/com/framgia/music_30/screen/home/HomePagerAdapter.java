@@ -18,7 +18,7 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
 
     public HomePagerAdapter(FragmentManager fm, Context context) {
         super(fm);
-        this.mContext = context;
+        mContext = context;
     }
 
     @Override
