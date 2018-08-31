@@ -13,11 +13,11 @@ import com.framgia.music_30.data.model.Genre;
 
 import java.util.ArrayList;
 
-public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
+public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<Genre> mGenreArrayList;
 
-    public AlbumAdapter(Context context, ArrayList<Genre> genreArrayList) {
+    public GenreAdapter(Context context, ArrayList<Genre> genreArrayList) {
         mContext = context;
         mGenreArrayList = genreArrayList;
     }
@@ -25,7 +25,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_album, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genre, null);
         return new ViewHolder(view);
     }
 
