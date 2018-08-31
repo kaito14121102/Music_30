@@ -11,11 +11,16 @@ import android.view.ViewGroup;
 import com.framgia.music_30.R;
 
 public class MySongsFragment extends Fragment {
-    private View mView;
+
+    public static MySongsFragment newInstance() {
+        MySongsFragment mySongsFragment = new MySongsFragment();
+        return mySongsFragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_mysongs,container,false);
+        View mView = inflater.inflate(R.layout.fragment_mysongs, container, false);
         return mView;
     }
 }

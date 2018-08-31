@@ -7,14 +7,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.framgia.music_30.R;
 
 public class ArtistFragment extends Fragment {
-    private View mView;
+
+    public static ArtistFragment newInstance() {
+        ArtistFragment artistFragment = new ArtistFragment();
+        return artistFragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_artist,container,false);
+        View mView = inflater.inflate(R.layout.fragment_artist, container, false);
         return mView;
     }
 }

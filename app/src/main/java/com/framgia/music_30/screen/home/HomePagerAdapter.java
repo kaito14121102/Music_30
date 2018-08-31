@@ -1,46 +1,43 @@
 package com.framgia.music_30.screen.home;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.framgia.music_30.R;
 import com.framgia.music_30.screen.home.fragment.AlbumFragment;
 import com.framgia.music_30.screen.home.fragment.ArtistFragment;
 import com.framgia.music_30.screen.home.fragment.MySongsFragment;
 import com.framgia.music_30.ultil.Constant;
 
+
 public class HomePagerAdapter extends FragmentStatePagerAdapter {
-    private AlbumFragment mAlbumFragment;
-    private ArtistFragment mArtistFragment;
-    private MySongsFragment mMySongsFragment;
+    private Context mContext;
 
-    public HomePagerAdapter(FragmentManager fm, AlbumFragment albumFragment,
-                            MySongsFragment mMySongsFragment, ArtistFragment artistFragment) {
+    public HomePagerAdapter(FragmentManager fm, Context context) {
         super(fm);
-        this.mAlbumFragment = albumFragment;
-        this.mMySongsFragment = mMySongsFragment;
-        this.mArtistFragment = artistFragment;
-
+        this.mContext = context;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0:
-                return mAlbumFragment;
-            case 1:
-                return mMySongsFragment;
-            case 2:
-                return mArtistFragment;
+            case Constant.TAB_ALBUM:
+                return AlbumFragment.newInstance();
+            case Constant.TAB_MYSONG:
+                return MySongsFragment.newInstance();
+            case Constant.TAB_ARTIST:
+                return ArtistFragment.newInstance();
             default:
-                return mAlbumFragment;
+                return null;
         }
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return Constant.TAB_TOTAL;
     }
 
     @Nullable
@@ -48,14 +45,14 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         String title = "";
         switch (position) {
-            case 0:
-                title = Constant.TITLE_FRAGMENT_ALBUM;
+            case Constant.TAB_ALBUM:
+                title = mContext.getString(R.string.ALBUM_TITLE);
                 break;
-            case 1:
-                title = Constant.TITLE_FRAGMENT_MY_SONGS;
+            case Constant.TAB_MYSONG:
+                title = mContext.getString(R.string.MYSONGS_TITLE);
                 break;
-            case 2:
-                title = Constant.TITLE_FRAGMENT_ARTIST;
+            case Constant.TAB_ARTIST:
+                title = mContext.getString(R.string.ARTIST_TITLE);
                 break;
         }
         return title;
