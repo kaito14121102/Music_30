@@ -16,7 +16,6 @@ public class AlbumFragment extends Fragment {
 
     public static AlbumFragment newInstance() {
         AlbumFragment albumFragment = new AlbumFragment();
-        Log.d("TAGG", "Fragment");
         return albumFragment;
     }
 
