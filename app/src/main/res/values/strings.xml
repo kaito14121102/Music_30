@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">SoundCloud</string>
     <string name="media_player">Media Player</string>
-    <string name="ALBUM_TITLE">Albums</string>
+    <string name="GENRE_TITLE">Genres</string>
     <string name="MYSONGS_TITLE">My Songs</string>
     <string name="ARTIST_TITLE">Artist</string>
+    <string name="GENRE_ALL_MUSIC">allmusic</string>
+    <string name="GENRE_ALL_AUDIO">allaudio</string>
+    <string name="GENRE_CLASSICAL">classical</string>
+    <string name="GENRE_COUNTRY">country</string>
+    <string name="GENRE_AMBIENT">ambient</string>
+    <string name="GENRE_ALTERNATIVEROCK">alternativerock</string>
 </resources>

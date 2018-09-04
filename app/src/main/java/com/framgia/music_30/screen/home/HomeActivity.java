@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setUpTabIcon() {
-        mTabLayout.getTabAt(Constant.TAB_ALBUM).setIcon(R.drawable.ic_album_black_24dp);
+        mTabLayout.getTabAt(Constant.TAB_GENRE).setIcon(R.drawable.ic_album_black_24dp);
         mTabLayout.getTabAt(Constant.TAB_MYSONG).setIcon(R.drawable.ic_library_music_black_24dp);
         mTabLayout.getTabAt(Constant.TAB_ARTIST).setIcon(R.drawable.ic_person_black_24dp);
     }

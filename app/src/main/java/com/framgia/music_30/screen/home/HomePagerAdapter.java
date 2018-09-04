@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.framgia.music_30.R;
-import com.framgia.music_30.screen.home.fragment.AlbumFragment;
+import com.framgia.music_30.screen.home.fragment.GenreFragment;
 import com.framgia.music_30.screen.home.fragment.ArtistFragment;
 import com.framgia.music_30.screen.home.fragment.MySongsFragment;
 import com.framgia.music_30.ultil.Constant;
@@ -24,8 +24,8 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case Constant.TAB_ALBUM:
-                return AlbumFragment.newInstance();
+            case Constant.TAB_GENRE:
+                return GenreFragment.newInstance();
             case Constant.TAB_MYSONG:
                 return MySongsFragment.newInstance();
             case Constant.TAB_ARTIST:
@@ -45,8 +45,8 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         String title = "";
         switch (position) {
-            case Constant.TAB_ALBUM:
-                title = mContext.getString(R.string.ALBUM_TITLE);
+            case Constant.TAB_GENRE:
+                title = mContext.getString(R.string.GENRE_TITLE);
                 break;
             case Constant.TAB_MYSONG:
                 title = mContext.getString(R.string.MYSONGS_TITLE);
