@@ -1,22 +1,28 @@
 package com.framgia.music_30.screen.home.fragment;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.framgia.music_30.BuildConfig;
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Genre;
+import com.framgia.music_30.screen.songgenre.SongGenreActivity;
 
 import java.util.ArrayList;
 
-public class GenreFragment extends Fragment {
+public class GenreFragment extends Fragment implements GenreAdapter.OnItemClickListener {
 
     public static GenreFragment newInstance() {
         GenreFragment genreFragment = new GenreFragment();
@@ -38,18 +44,13 @@ public class GenreFragment extends Fragment {
 
     private void setupRecycler(RecyclerView recyclerView) {
         ArrayList<Genre> genreArrayList = new ArrayList<>();
-        addGenres(genreArrayList);
-        GenreAdapter genreAdapter = new GenreAdapter(getActivity(), genreArrayList);
+        GenreAdapter genreAdapter = new GenreAdapter(getActivity(), genreArrayList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(genreAdapter);
     }
 
-    void addGenres(ArrayList<Genre> genreArrayList){
-        genreArrayList.add(new Genre(R.drawable.all_song,getString(R.string.GENRE_ALL_MUSIC)));
-        genreArrayList.add(new Genre(R.drawable.all_song,getString(R.string.GENRE_ALL_AUDIO)));
-        genreArrayList.add(new Genre(R.drawable.classical,getString(R.string.GENRE_CLASSICAL)));
-        genreArrayList.add(new Genre(R.drawable.classical,getString(R.string.GENRE_COUNTRY)));
-        genreArrayList.add(new Genre(R.drawable.classical,getString(R.string.GENRE_AMBIENT)));
-        genreArrayList.add(new Genre(R.drawable.classical,getString(R.string.GENRE_ALTERNATIVEROCK)));
+    @Override
+    public void onGenreClicked(String typeGenre) {
+        startActivity(SongGenreActivity.getGenreIntent(getActivity(), typeGenre));
     }
 }
