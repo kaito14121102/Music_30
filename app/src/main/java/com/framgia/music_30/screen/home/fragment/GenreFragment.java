@@ -1,6 +1,5 @@
 package com.framgia.music_30.screen.home.fragment;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.framgia.music_30.BuildConfig;
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Genre;
 import com.framgia.music_30.screen.songgenre.SongGenreActivity;
