@@ -5,6 +5,6 @@ import com.framgia.music_30.data.source.remote.OnFetchDataJsonListener;
 
 public interface SongDataSource {
     interface RemoteDataSource {
-        void getData(OnFetchDataJsonListener<Song> listener);
+        void getData(String genre, OnFetchDataJsonListener<Song> listener);
     }
 }

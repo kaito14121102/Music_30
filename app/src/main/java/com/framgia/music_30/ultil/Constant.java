@@ -8,4 +8,6 @@ public class Constant {
     public static final int TAB_MYSONG = 1;
     public static final int TAB_ARTIST = 2;
     public static final int TAB_TOTAL = 3;
+    public static final String TITLE = "title";
+    public static final String PERMALINK_URL = "permalink_url";
 }

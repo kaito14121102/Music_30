@@ -19,7 +19,7 @@ public class SongRepository {
         return sInstance;
     }
 
-    public void getData(OnFetchDataJsonListener<Song> listener) {
-        mSongRemoteDataSource.getData(listener);
+    public void getData(String genre, OnFetchDataJsonListener<Song> listener) {
+        mSongRemoteDataSource.getData(genre, listener);
     }
 }

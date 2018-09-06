@@ -18,10 +18,15 @@ public class SongGenrePresenter implements SongGenreContract.Presenter {
 
     @Override
     public void getSong(String genre) {
-        mSongRepository.getData(new OnFetchDataJsonListener<Song>() {
+        mSongRepository.getData(genre, new OnFetchDataJsonListener<Song>() {
             @Override
             public void onSucess(List<Song> data) {
                 mView.onGetDataSuccess(data);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                mView.onGetDataError(error.toString());
             }
         });
     }
