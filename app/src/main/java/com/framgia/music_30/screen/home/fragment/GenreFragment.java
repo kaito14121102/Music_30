@@ -16,11 +16,16 @@ import android.widget.Toast;
 
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Genre;
+import com.framgia.music_30.screen.home.HomeContract;
+import com.framgia.music_30.screen.home.HomePresenter;
 import com.framgia.music_30.screen.songgenre.SongGenreActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class GenreFragment extends Fragment implements GenreAdapter.OnItemClickListener {
+public class GenreFragment extends Fragment implements GenreAdapter.OnItemClickListener, HomeContract.View {
+    private HomeContract.Presenter mPresenter;
+    private GenreAdapter mGenreAdapter;
 
     public static GenreFragment newInstance() {
         GenreFragment genreFragment = new GenreFragment();
@@ -32,7 +37,23 @@ public class GenreFragment extends Fragment implements GenreAdapter.OnItemClickL
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_genre, container, false);
         initViews(view);
+        initData();
         return view;
+    }
+
+    @Override
+    public void onGenreClicked(String typeGenre) {
+        startActivity(SongGenreActivity.getGenreIntent(getActivity(), typeGenre));
+    }
+
+    @Override
+    public void setPresenter(HomeContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void OnGetDataSuccess(List<Genre> genres) {
+        mGenreAdapter.addData(genres);
     }
 
     private void initViews(View view) {
@@ -41,14 +62,14 @@ public class GenreFragment extends Fragment implements GenreAdapter.OnItemClickL
     }
 
     private void setupRecycler(RecyclerView recyclerView) {
-        ArrayList<Genre> genreArrayList = new ArrayList<>();
-        GenreAdapter genreAdapter = new GenreAdapter(getActivity(), genreArrayList, this);
+        ArrayList<Genre> genres;
+        genres = new ArrayList<>();
+        mGenreAdapter = new GenreAdapter(getActivity(), genres, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(genreAdapter);
+        recyclerView.setAdapter(mGenreAdapter);
     }
 
-    @Override
-    public void onGenreClicked(String typeGenre) {
-        startActivity(SongGenreActivity.getGenreIntent(getActivity(), typeGenre));
+    private void initData() {
+        mPresenter.getGenre();
     }
 }

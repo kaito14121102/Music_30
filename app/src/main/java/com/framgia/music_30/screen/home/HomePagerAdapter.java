@@ -15,17 +15,19 @@ import com.framgia.music_30.ultil.Constant;
 
 public class HomePagerAdapter extends FragmentStatePagerAdapter {
     private Context mContext;
+    private GenreFragment mGenreFragment;
 
-    public HomePagerAdapter(FragmentManager fm, Context context) {
+    public HomePagerAdapter(FragmentManager fm, Context context, GenreFragment genreFragment) {
         super(fm);
         mContext = context;
+        mGenreFragment = genreFragment;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case Constant.TAB_GENRE:
-                return GenreFragment.newInstance();
+                return mGenreFragment;
             case Constant.TAB_MYSONG:
                 return MySongsFragment.newInstance();
             case Constant.TAB_ARTIST:
