@@ -18,4 +18,9 @@ public class Constant {
     public static final String IMAGE_SONG = "artwork_url";
     public static final String TYPE_ONLINE = "online";
     public static final String TYPE_OFFLINE = "offline";
+    public static final int LOOP_ALL = 0;
+    public static final int LOOP_ONE = 1;
+    public static final int NONE_LOOP = 2;
+    public static final int NONE_SHUFFLE = 0;
+    public static final int SHUFFLE = 1;
 }

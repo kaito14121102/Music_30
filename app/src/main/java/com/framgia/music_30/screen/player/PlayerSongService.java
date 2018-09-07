@@ -19,8 +19,8 @@ public class PlayerSongService extends Service implements MediaListener {
     private ArrayList<Song> mSongs;
     private int mPosition = 0;
     private PlayerManager mManager;
+    private MediaPlayer mMediaPlayer;
     private OnMediaPlayerChangeListener mListener;
-    public MediaPlayer mMediaPlayer;
 
     public static Intent getIntentService(Context context, int position, ArrayList<Song> songs) {
         Intent intent = new Intent(context, PlayerSongService.class);
@@ -60,7 +60,18 @@ public class PlayerSongService extends Service implements MediaListener {
         mSongs = (ArrayList<Song>) bundle.getSerializable(SongGenreActivity.SONG_LIST);
         mPosition = intent.getIntExtra(SongGenreActivity.SONG_POSITION, 0);
         mManager = new PlayerManager(mPosition, mSongs, mMediaPlayer);
+        mManager.playSong();
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void shuffle() {
+        mManager.shuffle();
+    }
+
+    @Override
+    public void loop() {
+        mManager.loop();
     }
 
     @Override
@@ -89,12 +100,22 @@ public class PlayerSongService extends Service implements MediaListener {
     }
 
     @Override
+    public int getTotalSong() {
+        return mManager.getTotalSong();
+    }
+
+    @Override
     public void updateSeekBar(int position) {
         mMediaPlayer.seekTo(position);
     }
 
     public Song getSongCurrent() {
-        return mSongs.get(mPosition);
+        return mManager.getSong();
+    }
+
+    @Override
+    public boolean isClickButtonPlay() {
+        return mManager.isUpdateUI();
     }
 
     public void setListener(OnMediaPlayerChangeListener listener) {

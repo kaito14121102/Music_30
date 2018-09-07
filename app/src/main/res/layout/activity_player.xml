@@ -63,7 +63,7 @@
         style="@style/ImageButtonControl"
         android:layout_marginLeft="@dimen/dp_40"
         android:layout_marginStart="@dimen/dp_40"
-        android:src="@drawable/ic_shuffle_black_24dp"
+        android:src="@drawable/ic_none_shuffle_black_24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seek_bar" />
 
