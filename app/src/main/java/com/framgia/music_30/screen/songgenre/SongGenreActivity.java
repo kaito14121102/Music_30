@@ -31,7 +31,11 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     private SongGenreAdapter mAdapter;
     private TextView mTextGenre;
     private ArrayList<Song> mSongs;
+<<<<<<< HEAD
 
+=======
+    private boolean mIsBound = false;
+>>>>>>> song_service
 
     public static Intent getGenreIntent(Context context, String typeGenre) {
         Intent intent = new Intent(context, SongGenreActivity.class);
@@ -48,9 +52,15 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     }
 
     @Override
+<<<<<<< HEAD
     public void onGetDataSuccess(List<Song> songs) {
         mSongs.addAll(songs);
         mAdapter.addData(songs);
+=======
+    public void onGetDataSuccess(List<Song> songList) {
+        mSongs.addAll(songList);
+        mAdapter.addData(songList);
+>>>>>>> song_service
     }
 
     @Override

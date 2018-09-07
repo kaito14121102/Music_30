@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 
+
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private static final String DATE_FORMAT = "mm:ss";
     private static final int UPDATE_DELAY = 500;
     private static final int HANDLER_DELAY = 100;
+
     private TextView mTextTitleSong;
     private TextView mTextDuration;
     private TextView mTextDurationToal;
@@ -41,6 +43,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private PlayerSongService mSongService;
     private Boolean mIsBound;
     private MediaListener mMediaListener;
+
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -49,6 +52,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             mSongService.setListener(PlayerActivity.this);
             mMediaListener = mSongService.newInstance();
             updateSong(mSongService.getSongCurrent());
+
             mIsBound = true;
         }
 
@@ -65,6 +69,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         initWidget();
         Intent intent = new Intent(PlayerActivity.this, PlayerSongService.class);
         bindService(intent, mConnection, PlayerActivity.BIND_AUTO_CREATE);
+
         evenSeekBar();
     }
 
@@ -81,6 +86,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mMediaListener.updateSeekBar(seekBar.getProgress());
+
             }
         });
     }
@@ -88,6 +94,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
     }
 
     @Override
@@ -101,6 +108,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.image_button_backward:
                 mMediaListener.previousSong();
+
                 break;
             case R.id.image_button_back:
                 finish();
@@ -120,6 +128,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         mTextTitleSong.setText(song.getTitle());
         Picasso.with(this)
                 .load(song.getImageSong())
+
                 .into(mImageSong);
         UpdateTimeSong();
     }
@@ -148,6 +157,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         mTextDurationToal.setText(dateFormat.format(mSongService.getTotalSong()));
         mSeekBar.setMax(mMediaListener.getTotalSong());
+
     }
 
     private void UpdateTimeSong() {
@@ -162,6 +172,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 handler.postDelayed(this, UPDATE_DELAY);
             }
         }, HANDLER_DELAY);
+
     }
 
     private void initWidget() {
@@ -177,6 +188,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         mShuffle = findViewById(R.id.image_button_shuffle);
         mBack = findViewById(R.id.image_button_back);
         mDownload = findViewById(R.id.image_button_download);
+
         setEvenButton();
     }
 

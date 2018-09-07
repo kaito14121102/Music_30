@@ -25,6 +25,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     public PlayerManager(int position, ArrayList<Song> songs, MediaPlayer media) {
         if (songs != null) {
             mPosition = position;
+
             mSongs = songs;
             mMediaPlayer = media;
         }
@@ -143,4 +144,5 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                 break;
         }
     }
+
 }

@@ -66,6 +66,7 @@ public class PlayerSongService extends Service implements MediaListener, Service
         mIntentFilter.addAction(Constant.NOTIFICATION_NEXT_EVENT);
         mIntentFilter.addAction(Constant.NOTIFICATION_PAUSE_EVENT);
         registerReceiver(mBroadcastReceiver, mIntentFilter);
+
     }
 
     @Nullable
@@ -117,21 +118,24 @@ public class PlayerSongService extends Service implements MediaListener, Service
     }
 
     @Override
+
     public void pauseSong() {
         mManager.PauseAndPlaySong();
     }
 
     @Override
+
     public int getTotalSong() {
         return mManager.getTotalSong();
     }
 
     @Override
+
     public int getCurrentSong() {
         return mManager.getCurrentSong();
     }
 
-    @Override
+
     public void updateSeekBar(int position) {
         mMediaPlayer.seekTo(position);
     }
