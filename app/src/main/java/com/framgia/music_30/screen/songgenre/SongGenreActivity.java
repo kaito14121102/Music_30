@@ -1,8 +1,10 @@
 package com.framgia.music_30.screen.songgenre;
 
-
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,14 +16,21 @@ import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
 import com.framgia.music_30.data.source.SongRepository;
 import com.framgia.music_30.data.source.remote.SongRemoteDataSource;
+import com.framgia.music_30.screen.player.PlayerActivity;
+import com.framgia.music_30.screen.player.PlayerSongService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongGenreActivity extends AppCompatActivity implements SongGenreContract.View, SongGenreAdapter.OnItemClickListener {
+public class SongGenreActivity extends AppCompatActivity implements SongGenreContract.View
+        , SongGenreAdapter.OnItemClickListener {
     public static final String TYPE_GENRE = "com.framgia.music_30.TYPE_GENRE";
+    public static final String SONG_LIST = "com.framgia.music_30.SONG_LIST";
+    public static final String SONG_POSITION = "com.framgia.music_30.SONG_POSITION";
     private SongGenreAdapter mAdapter;
     private TextView mTextGenre;
+    private ArrayList<Song> mSongs;
 
     public static Intent getGenreIntent(Context context, String typeGenre) {
         Intent intent = new Intent(context, SongGenreActivity.class);
@@ -38,8 +47,9 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     }
 
     @Override
-    public void onGetDataSuccess(List<Song> songList) {
-        mAdapter.addData(songList);
+    public void onGetDataSuccess(List<Song> songs) {
+        mSongs.addAll(songs);
+        mAdapter.addData(songs);
     }
 
     @Override
@@ -49,6 +59,8 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
 
     @Override
     public void onSongClicked(int position) {
+        startService(PlayerSongService.getIntentService(this, position, mSongs));
+        startActivity(new Intent(SongGenreActivity.this, PlayerActivity.class));
     }
 
     private void getTypeGenre() {
@@ -66,6 +78,7 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     }
 
     private void initViews() {
+        mSongs = new ArrayList<>();
         RecyclerView recyclerViewGenre = findViewById(R.id.recycle_view_song);
         mTextGenre = findViewById(R.id.text_genre);
         setupRecycler(recyclerViewGenre);

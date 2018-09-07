@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".screen.songgenre.SongGenreActivity" />
-        <activity android:name=".screen.player.PlayerActivity"/>
+        <activity android:name=".screen.player.PlayerActivity" />
+        <service android:name=".screen.player.PlayerSongService"/>
     </application>
 
 </manifest>
