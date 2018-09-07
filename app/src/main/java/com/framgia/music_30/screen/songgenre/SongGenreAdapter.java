@@ -52,7 +52,7 @@ public class SongGenreAdapter extends RecyclerView.Adapter<SongGenreAdapter.View
     }
 
     interface OnItemClickListener {
-        void onSongClicked(Song song);
+        void onSongClicked(int position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -75,7 +75,7 @@ public class SongGenreAdapter extends RecyclerView.Adapter<SongGenreAdapter.View
         @Override
         public void onClick(View view) {
             if (mListener != null) {
-                mListener.onSongClicked(mSongs.get(getPosition()));
+                mListener.onSongClicked(getPosition());
             }
         }
 

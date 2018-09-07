@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
 import com.framgia.music_30.data.source.SongRepository;
 import com.framgia.music_30.data.source.remote.SongRemoteDataSource;
-import com.framgia.music_30.screen.home.fragment.GenreAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +48,7 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     }
 
     @Override
-    public void onSongClicked(Song song) {
-        Toast.makeText(this, song.getTitle(), Toast.LENGTH_SHORT).show();
+    public void onSongClicked(int position) {
     }
 
     private void getTypeGenre() {
