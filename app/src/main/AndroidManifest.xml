@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.framgia.music_30">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,13 +16,12 @@
         <activity android:name=".screen.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".screen.songgenre.SongGenreActivity" />
         <activity android:name=".screen.player.PlayerActivity" />
-        <service android:name=".screen.player.PlayerSongService"/>
-    </application>
 
+        <service android:name=".screen.player.PlayerSongService" />
+    </application>
 </manifest>

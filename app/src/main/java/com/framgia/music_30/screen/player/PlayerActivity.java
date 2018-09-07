@@ -3,6 +3,7 @@ package com.framgia.music_30.screen.player;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
@@ -41,7 +42,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private Boolean mIsBound;
     private MediaListener mMediaListener;
     private Handler mHandler;
-    private Boolean mDownloaded;
+    private boolean mIsDownloaded;
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -120,6 +121,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 mMediaListener.loop();
                 break;
             case R.id.image_button_download:
+                if (mIsDownloaded == false)
+                    mMediaListener.downLoadSong();
                 break;
             default:
                 break;
@@ -165,6 +168,13 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         mTextDurationToal.setText(dateFormat.format(timetotal));
         mSeekBar.setMax(timetotal);
+    }
+
+    @Override
+    public void downloadSong(String url, String name) {
+        new SongDownload(this, name).execute(url);
+        mDownload.setImageResource(R.drawable.ic_arrow_downloaded_black_24dp);
+        mIsDownloaded = true;
     }
 
     @Override

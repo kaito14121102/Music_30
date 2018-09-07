@@ -5,9 +5,9 @@ import android.media.MediaPlayer;
 import com.framgia.music_30.BuildConfig;
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
-import com.framgia.music_30.screen.player.OnMediaPlayerChangeListener;
 import com.framgia.music_30.ultil.APISoundCloud;
 import com.framgia.music_30.ultil.Constant;
+
 import com.framgia.music_30.ultil.StringUltil;
 
 import java.io.IOException;
@@ -179,6 +179,12 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener, MediaPla
                 mListener.updateLoop(R.drawable.ic_loop_black_24dp);
                 break;
         }
+    }
+
+    public void downloadSong() {
+        mListener.downloadSong(StringUltil.getUrl(mSongs.get(mPosition).getUrlPlay(),
+                APISoundCloud.PLAY_CLIENT_ID, BuildConfig.API_KEY).toString(),
+                mSongs.get(mPosition).getTitle());
     }
 
     @Override

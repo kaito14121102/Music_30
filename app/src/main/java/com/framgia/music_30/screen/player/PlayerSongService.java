@@ -7,21 +7,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
-import com.framgia.music_30.screen.player.MediaListener;
-import com.framgia.music_30.screen.player.OnMediaPlayerChangeListener;
-import com.framgia.music_30.screen.player.PlayerActivity;
-import com.framgia.music_30.screen.player.PlayerManager;
 import com.framgia.music_30.screen.songgenre.SongGenreActivity;
+
 import com.framgia.music_30.ultil.Constant;
 
 import java.io.Serializable;
@@ -33,6 +30,10 @@ public class PlayerSongService extends Service implements MediaListener, Service
     private PlayerManager mManager;
     private MediaPlayer mMediaPlayer;
     private OnMediaPlayerChangeListener mListener;
+
+    public int getPosition() {
+        return mPosition;
+    }
 
     public static Intent getIntentService(Context context, int position, ArrayList<Song> songs) {
         Intent intent = new Intent(context, PlayerSongService.class);
@@ -138,13 +139,13 @@ public class PlayerSongService extends Service implements MediaListener, Service
         return mManager.getTotalSong();
     }
 
-    @Override
     public void updateSeekBar(int position) {
         mMediaPlayer.seekTo(position);
     }
 
     @Override
     public void downLoadSong() {
+        mManager.downloadSong();
     }
 
     @Override

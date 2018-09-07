@@ -27,6 +27,7 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     private SongGenreAdapter mAdapter;
     private TextView mTextGenre;
     private ArrayList<Song> mSongs;
+    private boolean mIsBound;
 
     public static Intent getGenreIntent(Context context, String typeGenre) {
         Intent intent = new Intent(context, SongGenreActivity.class);

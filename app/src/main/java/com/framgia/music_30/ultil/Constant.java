@@ -28,5 +28,14 @@ public class Constant {
     public static final String NOTIFICATION_NEXT_EVENT = "next_event";
     public static int REQUEST_CODE_NOTIFICATION = 123;
     public static int NOTIFICATION_ID = 1337;
+    public static int NOTIFICATION_DOWNLOAD = 17;
     public static String CHANEL_ID = "CHANEL_ID";
+    public static String DOWNLOAD_COMPLETE = "Download Success";
+    public static String FOLDER_OFFLINE_MUSIC = "sdcard/mymusic";
+    public static String DOWNLOADING = "Downloading...";
+    public static String FILE_EXTEND = ".mp3";
+    public static int SIZE_BYTE = 1024;
+    public static int INPUTSTREAM_SIZE = 8192;
+    public static int ONEHUNDERED = 100;
+    public static int REQUEST_PERMISSION_CODE = 123;
 }
