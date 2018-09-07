@@ -1,6 +1,8 @@
 package com.framgia.music_30.data.model;
 
-public class Song {
+import java.io.Serializable;
+
+public class Song implements Serializable{
     private String mId;
     private String mTitle;
     private String mImageSong;
