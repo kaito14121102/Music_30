@@ -15,14 +15,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
 import com.framgia.music_30.screen.songgenre.SongGenreActivity;
+
 
 import com.framgia.music_30.ultil.Constant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 
 
 public class PlayerSongService extends Service implements MediaListener, ServiceListener {
@@ -33,6 +36,7 @@ public class PlayerSongService extends Service implements MediaListener, Service
     public static final int REQUEST_CODE_NOTIFICATION = 123;
     public static final int NOTIFICATION_ID = 1337;
     private OnMediaPlayerChangeListener mListener;
+
 
     public int getPosition() {
         return mPosition;
@@ -60,6 +64,7 @@ public class PlayerSongService extends Service implements MediaListener, Service
                         break;
                     case Constant.NOTIFICATION_NEXT_EVENT:
                         nextSong();
+
                         break;
                     case Constant.NOTIFICATION_PAUSE_EVENT:
                         pauseSong();
@@ -107,6 +112,7 @@ public class PlayerSongService extends Service implements MediaListener, Service
     @Override
     public void loop() {
         mManager.loop();
+
     }
 
     @Override
@@ -124,6 +130,7 @@ public class PlayerSongService extends Service implements MediaListener, Service
     @Override
     public void previousSong() {
         mManager.previousSong();
+
     }
 
     @Override
@@ -168,6 +175,7 @@ public class PlayerSongService extends Service implements MediaListener, Service
     }
 
     public void notification(String titleSong) {
+
         Intent notificationIntent = new Intent(this, PlayerActivity.class);
         Intent intentBack = new Intent(Constant.NOTIFICATION_BACK_EVENT);
         Intent intentPause = new Intent(Constant.NOTIFICATION_PAUSE_EVENT);
