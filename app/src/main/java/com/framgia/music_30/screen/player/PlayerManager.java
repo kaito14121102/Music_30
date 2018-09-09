@@ -2,28 +2,31 @@ package com.framgia.music_30.screen.player;
 
 import android.media.MediaPlayer;
 
-
 import com.framgia.music_30.BuildConfig;
+import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
 import com.framgia.music_30.ultil.APISoundCloud;
+import com.framgia.music_30.ultil.Constant;
 import com.framgia.music_30.ultil.StringUltil;
-
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class PlayerManager {
+public class PlayerManager implements MediaPlayer.OnCompletionListener {
     private ArrayList<Song> mSongs;
     private MediaPlayer mMediaPlayer;
-    private UpdateUiPlayerListener mUpdateUiListener;
+    private OnMediaPlayerChangeListener mListener;
     private int mPosition;
+    private int mShuffle;
+    private int mLoop;
 
-    public PlayerManager(int position, ArrayList<Song> songs, MediaPlayer media, UpdateUiPlayerListener listener) {
+    public PlayerManager(int position, ArrayList<Song> songs, MediaPlayer media, OnMediaPlayerChangeListener listener) {
         if (songs != null) {
             mPosition = position;
             mSongs = songs;
             mMediaPlayer = media;
-            mUpdateUiListener = listener;
+            mListener = listener;
         }
     }
 
@@ -37,10 +40,11 @@ public class PlayerManager {
                 mMediaPlayer.setDataSource(StringUltil.
                         getUrl(mSongs.get(mPosition).getUrlPlay(), APISoundCloud.PLAY_CLIENT_ID, BuildConfig.API_KEY).toString());
                 mMediaPlayer.prepare();
+                mMediaPlayer.setOnCompletionListener(this);
                 mMediaPlayer.start();
-                mUpdateUiListener.updateSong(mSongs.get(mPosition).getTitle(), mSongs.get(mPosition).getImageSong());
+                mListener.updateSong(mSongs.get(mPosition).getTitle(), mSongs.get(mPosition).getImageSong());
             } catch (IOException e) {
-                mUpdateUiListener.mediaError(e);
+                mListener.mediaError(e);
             }
         }
     }
@@ -73,8 +77,58 @@ public class PlayerManager {
         if (mMediaPlayer != null) {
             if (mMediaPlayer.isPlaying()) {
                 mMediaPlayer.pause();
+                mListener.updatePlayPause(R.drawable.ic_play_arrow_black_24dp);
             } else {
                 mMediaPlayer.start();
+                mListener.updatePlayPause(R.drawable.ic_pause_black_24dp);
+            }
+        }
+    }
+
+    public void shuffle() {
+        switch (mShuffle) {
+            case Constant.NONE_SHUFFLE:
+                mShuffle = Constant.SHUFFLE;
+                mListener.updateShuffle(R.drawable.ic_shuffle_black_24dp);
+                break;
+            case Constant.SHUFFLE:
+                mShuffle = Constant.NONE_SHUFFLE;
+                mListener.updateShuffle(R.drawable.ic_none_shuffle_black_24dp);
+                break;
+        }
+    }
+
+    public void loop() {
+        switch (mLoop) {
+            case Constant.LOOP_ALL:
+                mLoop = Constant.LOOP_ONE;
+                mListener.updateLoop(R.drawable.ic_repeat_one_black_24dp);
+                break;
+            case Constant.LOOP_ONE:
+                mLoop = Constant.NONE_LOOP;
+                mListener.updateLoop(R.drawable.ic_none_loop_black_24dp);
+                break;
+            case Constant.NONE_LOOP:
+                mLoop = Constant.LOOP_ALL;
+                mListener.updateLoop(R.drawable.ic_loop_black_24dp);
+                break;
+        }
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+        if (mShuffle == Constant.NONE_SHUFFLE) {
+            if (mLoop == Constant.LOOP_ALL) {
+                nextSong();
+            } else if (mLoop == Constant.LOOP_ONE) {
+                playSong();
+            }
+        } else {
+            if (mLoop == Constant.LOOP_ALL) {
+                mPosition = new Random().nextInt(mSongs.size() - 1);
+                playSong();
+            } else if (mLoop == Constant.LOOP_ONE) {
+                playSong();
             }
         }
     }

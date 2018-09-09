@@ -15,11 +15,11 @@ import com.framgia.music_30.screen.songgenre.SongGenreActivity;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PlayerSongService extends Service {
+public class PlayerSongService extends Service implements MediaListener {
     private ArrayList<Song> mSongs;
     private int mPosition = 0;
     private PlayerManager mManager;
-    public MediaPlayer mMediaPlayer;
+    private MediaPlayer mMediaPlayer;
 
     public static Intent getIntentService(Context context, int position, ArrayList<Song> songs) {
         Intent intent = new Intent(context, PlayerSongService.class);
@@ -56,37 +56,60 @@ public class PlayerSongService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public void updateUiListener(UpdateUiPlayerListener listener) {
-        mManager = new PlayerManager(mPosition, mSongs, mMediaPlayer, listener);
+    @Override
+    public void shuffle() {
+        mManager.shuffle();
     }
 
+    @Override
+    public void loop() {
+        mManager.loop();
+    }
+
+    @Override
     public void playSong() {
         mManager.playSong();
     }
 
+    @Override
     public void nextSong() {
         mManager.nextSong();
     }
 
+    @Override
     public void previousSong() {
         mManager.previousSong();
     }
 
+    @Override
     public void pauseSong() {
         mManager.PauseAndPlaySong();
     }
 
+    @Override
     public int getTotalSong() {
         return mManager.getTotalSong();
     }
 
+    @Override
     public int getCurrentSong() {
         return mManager.getCurrentSong();
     }
 
+    @Override
     public void updateSeekBar(int position) {
         mMediaPlayer.seekTo(position);
     }
+
+
+    public void updateUiListener(OnMediaPlayerChangeListener listener) {
+        mManager = new PlayerManager(mPosition, mSongs, mMediaPlayer, listener);
+    }
+
+    public MediaListener newInstance() {
+        return this;
+    }
+
 
     public class MyBinder extends Binder {
         public PlayerSongService getInstance() {

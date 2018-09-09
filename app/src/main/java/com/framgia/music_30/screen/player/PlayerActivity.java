@@ -22,7 +22,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 
-public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, UpdateUiPlayerListener {
+public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, OnMediaPlayerChangeListener {
     private static final String DATE_FORMAT = "mm:ss";
     private static final int UPDATE_DELAY = 500;
     private static final int HANDLER_DELAY = 100;
@@ -40,16 +40,14 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private ImageButton mLoop;
     private PlayerSongService mSongService;
     private Boolean mIsBound;
-    private Song mSong;
-    private Handler mHandler;
-    private Runnable mRunnable;
-    private UpdateUiPlayerListener mUpdateUiPlayer;
+    private MediaListener mMediaListener;
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             PlayerSongService.MyBinder binder = (PlayerSongService.MyBinder) iBinder;
             mSongService = binder.getInstance();
             mSongService.updateUiListener(PlayerActivity.this);
+            mMediaListener = mSongService.newInstance();
             mSongService.playSong();
             mIsBound = true;
         }
@@ -82,7 +80,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                mSongService.updateSeekBar(seekBar.getProgress());
+                mMediaListener.updateSeekBar(seekBar.getProgress());
             }
         });
     }
@@ -91,17 +89,22 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_button_pause:
-                mSongService.pauseSong();
+                mMediaListener.pauseSong();
                 break;
             case R.id.image_button_forward:
-                mSongService.nextSong();
+                mMediaListener.nextSong();
                 break;
             case R.id.image_button_backward:
-                mSongService.previousSong();
+                mMediaListener.previousSong();
                 break;
             case R.id.image_button_back:
                 finish();
                 break;
+            case R.id.image_button_shuffle:
+                mMediaListener.shuffle();
+                break;
+            case R.id.image_button_loop:
+                mMediaListener.loop();
             default:
                 break;
         }
@@ -121,10 +124,25 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void updateShuffle(int typeShuffle) {
+        mShuffle.setImageResource(typeShuffle);
+    }
+
+    @Override
+    public void updateLoop(int typeLoop) {
+        mLoop.setImageResource(typeLoop);
+    }
+
+    @Override
+    public void updatePlayPause(int type) {
+        mPause.setImageResource(type);
+    }
+
     private void setTimeTotal() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         mTextDurationToal.setText(dateFormat.format(mSongService.getTotalSong()));
-        mSeekBar.setMax(mSongService.getTotalSong());
+        mSeekBar.setMax(mMediaListener.getTotalSong());
     }
 
     private void UpdateTimeSong() {
@@ -133,9 +151,9 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void run() {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
-                mTextDuration.setText(simpleDateFormat.format(mSongService.getCurrentSong()));
+                mTextDuration.setText(simpleDateFormat.format(mMediaListener.getCurrentSong()));
                 setTimeTotal();
-                mSeekBar.setProgress(mSongService.getCurrentSong());
+                mSeekBar.setProgress(mMediaListener.getCurrentSong());
                 handler.postDelayed(this, UPDATE_DELAY);
             }
         }, HANDLER_DELAY);
@@ -154,7 +172,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         mShuffle = findViewById(R.id.image_button_shuffle);
         mBack = findViewById(R.id.image_button_back);
         mDownload = findViewById(R.id.image_button_download);
-        mHandler = new Handler();
         setEvenButton();
     }
 
