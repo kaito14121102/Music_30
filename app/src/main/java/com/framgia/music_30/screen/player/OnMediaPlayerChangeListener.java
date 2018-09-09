@@ -1,7 +1,9 @@
 package com.framgia.music_30.screen.player;
 
+import com.framgia.music_30.data.model.Song;
+
 public interface OnMediaPlayerChangeListener {
-    void updateSong(String nameSong, String imageSong);
+    void updateSong(Song song);
 
     void mediaError(Exception e);
 

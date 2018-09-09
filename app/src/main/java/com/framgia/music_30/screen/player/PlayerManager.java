@@ -17,20 +17,48 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     private ArrayList<Song> mSongs;
     private MediaPlayer mMediaPlayer;
     private OnMediaPlayerChangeListener mListener;
+    private ServiceListener mServiceListener;
     private int mPosition;
     private int mShuffle;
     private int mLoop;
 
-    public PlayerManager(int position, ArrayList<Song> songs, MediaPlayer media, OnMediaPlayerChangeListener listener) {
+    public PlayerManager(int position, ArrayList<Song> songs, MediaPlayer media) {
         if (songs != null) {
             mPosition = position;
             mSongs = songs;
             mMediaPlayer = media;
-            mListener = listener;
         }
     }
 
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+        if (mShuffle == Constant.NONE_SHUFFLE) {
+            if (mLoop == Constant.LOOP_ALL) {
+                nextSong();
+            } else if (mLoop == Constant.LOOP_ONE) {
+                playSong();
+            }
+        } else {
+            if (mLoop == Constant.LOOP_ALL) {
+                mPosition = new Random().nextInt(mSongs.size() - 1);
+                mListener.updateSong(mSongs.get(mPosition));
+                playSong();
+            } else if (mLoop == Constant.LOOP_ONE) {
+                playSong();
+            }
+        }
+    }
+
+    public void setListener(OnMediaPlayerChangeListener listener) {
+        mListener = listener;
+    }
+
+    public void setServiceListener(ServiceListener serviceListener) {
+        mServiceListener = serviceListener;
+    }
+
     public void playSong() {
+        mServiceListener.updateNotification(mSongs.get(mPosition).getTitle());
         if (mMediaPlayer != null) {
             if (mMediaPlayer.isPlaying()) {
                 mMediaPlayer.pause();
@@ -42,9 +70,8 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                 mMediaPlayer.prepare();
                 mMediaPlayer.setOnCompletionListener(this);
                 mMediaPlayer.start();
-                mListener.updateSong(mSongs.get(mPosition).getTitle(), mSongs.get(mPosition).getImageSong());
             } catch (IOException e) {
-                mListener.mediaError(e);
+                e.printStackTrace();
             }
         }
     }
@@ -53,6 +80,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         if (mPosition == mSongs.size() - 1) {
             mPosition = 0;
         } else mPosition++;
+        mListener.updateSong(mSongs.get(mPosition));
         playSong();
     }
 
@@ -62,6 +90,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         } else {
             mPosition--;
         }
+        mListener.updateSong(mSongs.get(mPosition));
         playSong();
     }
 
@@ -112,24 +141,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                 mLoop = Constant.LOOP_ALL;
                 mListener.updateLoop(R.drawable.ic_loop_black_24dp);
                 break;
-        }
-    }
-
-    @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-        if (mShuffle == Constant.NONE_SHUFFLE) {
-            if (mLoop == Constant.LOOP_ALL) {
-                nextSong();
-            } else if (mLoop == Constant.LOOP_ONE) {
-                playSong();
-            }
-        } else {
-            if (mLoop == Constant.LOOP_ALL) {
-                mPosition = new Random().nextInt(mSongs.size() - 1);
-                playSong();
-            } else if (mLoop == Constant.LOOP_ONE) {
-                playSong();
-            }
         }
     }
 }

@@ -17,4 +17,12 @@
         <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@null</item>
     </style>
 
+    <style name="Notification">
+        <item name="android:layout_width">@dimen/dp_30</item>
+        <item name="android:layout_height">@dimen/dp_30</item>
+        <item name="android:layout_marginTop">@dimen/dp_4</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_marginEnd" tools:ignore="NewApi">@dimen/dp_15</item>
+        <item name="android:layout_marginRight">@dimen/dp_15</item>
+    </style>
 </resources>

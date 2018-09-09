@@ -46,9 +46,9 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             PlayerSongService.MyBinder binder = (PlayerSongService.MyBinder) iBinder;
             mSongService = binder.getInstance();
-            mSongService.updateUiListener(PlayerActivity.this);
+            mSongService.setListener(PlayerActivity.this);
             mMediaListener = mSongService.newInstance();
-            mSongService.playSong();
+            updateSong(mSongService.getSongCurrent());
             mIsBound = true;
         }
 
@@ -86,6 +86,11 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_button_pause:
@@ -111,10 +116,10 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void updateSong(String nameSong, String imageSong) {
-        mTextTitleSong.setText(nameSong);
+    public void updateSong(Song song) {
+        mTextTitleSong.setText(song.getTitle());
         Picasso.with(this)
-                .load(imageSong)
+                .load(song.getImageSong())
                 .into(mImageSong);
         UpdateTimeSong();
     }
@@ -145,7 +150,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         mSeekBar.setMax(mMediaListener.getTotalSong());
     }
 
-    
     private void UpdateTimeSong() {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
