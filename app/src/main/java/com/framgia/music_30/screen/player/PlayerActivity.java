@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
+import com.framgia.music_30.ultil.Constant;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -43,6 +44,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private PlayerSongService mSongService;
     private Boolean mIsBound;
     private MediaListener mMediaListener;
+
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -120,6 +122,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 mMediaListener.loop();
             default:
                 break;
+
         }
     }
 
@@ -170,6 +173,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 setTimeTotal();
                 mSeekBar.setProgress(mMediaListener.getCurrentSong());
                 handler.postDelayed(this, UPDATE_DELAY);
+
             }
         }, HANDLER_DELAY);
 
@@ -188,6 +192,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         mShuffle = findViewById(R.id.image_button_shuffle);
         mBack = findViewById(R.id.image_button_back);
         mDownload = findViewById(R.id.image_button_download);
+
 
         setEvenButton();
     }

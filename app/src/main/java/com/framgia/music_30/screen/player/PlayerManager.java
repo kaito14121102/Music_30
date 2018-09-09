@@ -70,6 +70,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                         getUrl(mSongs.get(mPosition).getUrlPlay(), APISoundCloud.PLAY_CLIENT_ID, BuildConfig.API_KEY).toString());
                 mMediaPlayer.prepare();
                 mMediaPlayer.setOnCompletionListener(this);
+
                 mMediaPlayer.start();
             } catch (IOException e) {
                 e.printStackTrace();

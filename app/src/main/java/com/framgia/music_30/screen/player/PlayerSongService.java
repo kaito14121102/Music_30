@@ -18,10 +18,12 @@ import android.util.Log;
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
 import com.framgia.music_30.screen.songgenre.SongGenreActivity;
+
 import com.framgia.music_30.ultil.Constant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 
 public class PlayerSongService extends Service implements MediaListener, ServiceListener {
     private ArrayList<Song> mSongs;
@@ -31,6 +33,10 @@ public class PlayerSongService extends Service implements MediaListener, Service
     public static final int REQUEST_CODE_NOTIFICATION = 123;
     public static final int NOTIFICATION_ID = 1337;
     private OnMediaPlayerChangeListener mListener;
+
+    public int getPosition() {
+        return mPosition;
+    }
 
     public static Intent getIntentService(Context context, int position, ArrayList<Song> songs) {
         Intent intent = new Intent(context, PlayerSongService.class);
@@ -89,6 +95,7 @@ public class PlayerSongService extends Service implements MediaListener, Service
         mManager = new PlayerManager(mPosition, mSongs, mMediaPlayer);
         mManager.setServiceListener(this);
         mManager.playSong();
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -105,11 +112,13 @@ public class PlayerSongService extends Service implements MediaListener, Service
     @Override
     public void playSong() {
         mManager.playSong();
+
     }
 
     @Override
     public void nextSong() {
         mManager.nextSong();
+
     }
 
     @Override
