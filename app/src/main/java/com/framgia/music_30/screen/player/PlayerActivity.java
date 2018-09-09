@@ -145,6 +145,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         mSeekBar.setMax(mMediaListener.getTotalSong());
     }
 
+    
     private void UpdateTimeSong() {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
