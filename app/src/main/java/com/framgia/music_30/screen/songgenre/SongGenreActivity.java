@@ -1,10 +1,7 @@
 package com.framgia.music_30.screen.songgenre;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +16,6 @@ import com.framgia.music_30.data.source.remote.SongRemoteDataSource;
 import com.framgia.music_30.screen.player.PlayerActivity;
 import com.framgia.music_30.screen.player.PlayerSongService;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,11 +27,7 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     private SongGenreAdapter mAdapter;
     private TextView mTextGenre;
     private ArrayList<Song> mSongs;
-<<<<<<< HEAD
-
-=======
     private boolean mIsBound = false;
->>>>>>> song_service
 
     public static Intent getGenreIntent(Context context, String typeGenre) {
         Intent intent = new Intent(context, SongGenreActivity.class);
@@ -52,15 +44,10 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     }
 
     @Override
-<<<<<<< HEAD
     public void onGetDataSuccess(List<Song> songs) {
         mSongs.addAll(songs);
         mAdapter.addData(songs);
-=======
-    public void onGetDataSuccess(List<Song> songList) {
-        mSongs.addAll(songList);
-        mAdapter.addData(songList);
->>>>>>> song_service
+
     }
 
     @Override

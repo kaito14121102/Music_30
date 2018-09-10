@@ -18,4 +18,6 @@ public interface MediaListener {
     int getCurrentSong();
 
     void updateSeekBar(int position);
+
+    void downLoadSong();
 }

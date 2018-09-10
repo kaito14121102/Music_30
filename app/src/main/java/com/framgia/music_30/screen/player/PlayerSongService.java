@@ -13,20 +13,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-
 
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
 import com.framgia.music_30.screen.songgenre.SongGenreActivity;
-
-
 import com.framgia.music_30.ultil.Constant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-
 
 public class PlayerSongService extends Service implements MediaListener, ServiceListener {
     private ArrayList<Song> mSongs;
@@ -37,17 +31,17 @@ public class PlayerSongService extends Service implements MediaListener, Service
     public static final int NOTIFICATION_ID = 1337;
     private OnMediaPlayerChangeListener mListener;
 
-
-    public int getPosition() {
-        return mPosition;
-    }
-
     public static Intent getIntentService(Context context, int position, ArrayList<Song> songs) {
         Intent intent = new Intent(context, PlayerSongService.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(SongGenreActivity.SONG_LIST, (Serializable) songs);
         intent.putExtras(bundle);
         intent.putExtra(SongGenreActivity.SONG_POSITION, position);
+        return intent;
+    }
+
+    public static Intent getIntentBindService(Context context){
+        Intent intent = new Intent(context,PlayerSongService.class);
         return intent;
     }
 
@@ -64,7 +58,6 @@ public class PlayerSongService extends Service implements MediaListener, Service
                         break;
                     case Constant.NOTIFICATION_NEXT_EVENT:
                         nextSong();
-
                         break;
                     case Constant.NOTIFICATION_PAUSE_EVENT:
                         pauseSong();
@@ -77,7 +70,6 @@ public class PlayerSongService extends Service implements MediaListener, Service
         mIntentFilter.addAction(Constant.NOTIFICATION_NEXT_EVENT);
         mIntentFilter.addAction(Constant.NOTIFICATION_PAUSE_EVENT);
         registerReceiver(mBroadcastReceiver, mIntentFilter);
-
     }
 
     @Nullable
@@ -100,7 +92,6 @@ public class PlayerSongService extends Service implements MediaListener, Service
         mManager = new PlayerManager(mPosition, mSongs, mMediaPlayer);
         mManager.setServiceListener(this);
         mManager.playSong();
-
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -112,48 +103,46 @@ public class PlayerSongService extends Service implements MediaListener, Service
     @Override
     public void loop() {
         mManager.loop();
-
     }
 
     @Override
     public void playSong() {
         mManager.playSong();
-
     }
 
     @Override
     public void nextSong() {
         mManager.nextSong();
-
     }
 
     @Override
     public void previousSong() {
         mManager.previousSong();
-
     }
 
     @Override
-
     public void pauseSong() {
         mManager.PauseAndPlaySong();
     }
 
     @Override
-
     public int getTotalSong() {
         return mManager.getTotalSong();
     }
 
     @Override
-
     public int getCurrentSong() {
         return mManager.getCurrentSong();
     }
 
-
+    @Override
     public void updateSeekBar(int position) {
         mMediaPlayer.seekTo(position);
+    }
+
+    @Override
+    public void downLoadSong() {
+        mManager.downloadSong();
     }
 
     @Override
@@ -175,7 +164,6 @@ public class PlayerSongService extends Service implements MediaListener, Service
     }
 
     public void notification(String titleSong) {
-
         Intent notificationIntent = new Intent(this, PlayerActivity.class);
         Intent intentBack = new Intent(Constant.NOTIFICATION_BACK_EVENT);
         Intent intentPause = new Intent(Constant.NOTIFICATION_PAUSE_EVENT);

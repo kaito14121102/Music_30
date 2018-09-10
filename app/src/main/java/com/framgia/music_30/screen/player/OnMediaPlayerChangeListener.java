@@ -12,4 +12,6 @@ public interface OnMediaPlayerChangeListener {
     void updateLoop(int typeLoop);
 
     void updatePlayPause(int type);
+
+    void downloadSong(String url, String name);
 }

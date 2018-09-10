@@ -23,16 +23,9 @@ public class Constant {
     public static final int NONE_LOOP = 2;
     public static final int NONE_SHUFFLE = 0;
     public static final int SHUFFLE = 1;
-<<<<<<< HEAD
-<<<<<<< HEAD
     public static final String NOTIFICATION_BACK_EVENT = "back_event";
     public static final String NOTIFICATION_PAUSE_EVENT = "pause_event";
     public static final String NOTIFICATION_NEXT_EVENT = "next_event";
-=======
->>>>>>> song control
-=======
-    public static final String NOTIFICATION_BACK_EVENT = "back_event";
-    public static final String NOTIFICATION_PAUSE_EVENT = "pause_event";
-    public static final String NOTIFICATION_NEXT_EVENT = "next_event";
->>>>>>> create notification
+    public static final String MY_FOLDER = "mymusic";
+    public static final String ORIGNAL_DIRECTORY = "sdcard/";
 }

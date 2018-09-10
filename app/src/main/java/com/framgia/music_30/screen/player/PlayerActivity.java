@@ -1,10 +1,11 @@
 package com.framgia.music_30.screen.player;
 
+import android.app.DownloadManager;
 import android.content.ComponentName;
-import android.content.Intent;
+import android.content.Context;
 import android.content.ServiceConnection;
 
-
+import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
@@ -17,18 +18,21 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.framgia.music_30.BuildConfig;
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
+import com.framgia.music_30.ultil.APISoundCloud;
 import com.framgia.music_30.ultil.Constant;
+import com.framgia.music_30.ultil.StringUltil;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 
 public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, OnMediaPlayerChangeListener {
     private static final String DATE_FORMAT = "mm:ss";
     private static final int UPDATE_DELAY = 500;
     private static final int HANDLER_DELAY = 100;
-
     private TextView mTextTitleSong;
     private TextView mTextDuration;
     private TextView mTextDurationToal;
@@ -44,8 +48,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private PlayerSongService mSongService;
     private Boolean mIsBound;
     private MediaListener mMediaListener;
-
-
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -54,7 +56,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             mSongService.setListener(PlayerActivity.this);
             mMediaListener = mSongService.newInstance();
             updateSong(mSongService.getSongCurrent());
-
             mIsBound = true;
         }
 
@@ -69,9 +70,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         initWidget();
-        Intent intent = new Intent(PlayerActivity.this, PlayerSongService.class);
-        bindService(intent, mConnection, PlayerActivity.BIND_AUTO_CREATE);
-
+        bindService(PlayerSongService.getIntentBindService(this), mConnection, PlayerActivity.BIND_AUTO_CREATE);
         evenSeekBar();
     }
 
@@ -88,7 +87,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mMediaListener.updateSeekBar(seekBar.getProgress());
-
             }
         });
     }
@@ -96,7 +94,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
     }
 
     @Override
@@ -110,7 +107,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.image_button_backward:
                 mMediaListener.previousSong();
-
                 break;
             case R.id.image_button_back:
                 finish();
@@ -120,9 +116,11 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.image_button_loop:
                 mMediaListener.loop();
+            case R.id.image_button_download:
+                mMediaListener.downLoadSong();
+                break;
             default:
                 break;
-
         }
     }
 
@@ -131,7 +129,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         mTextTitleSong.setText(song.getTitle());
         Picasso.with(this)
                 .load(song.getImageSong())
-
                 .into(mImageSong);
         UpdateTimeSong();
     }
@@ -156,11 +153,16 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         mPause.setImageResource(type);
     }
 
+    @Override
+    public void downloadSong(String url, String name) {
+        new SongDownload(this, name).execute(url);
+        mDownload.setImageResource(R.drawable.ic_arrow_downloaded_black_24dp);
+    }
+
     private void setTimeTotal() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         mTextDurationToal.setText(dateFormat.format(mSongService.getTotalSong()));
         mSeekBar.setMax(mMediaListener.getTotalSong());
-
     }
 
     private void UpdateTimeSong() {
@@ -173,11 +175,10 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 setTimeTotal();
                 mSeekBar.setProgress(mMediaListener.getCurrentSong());
                 handler.postDelayed(this, UPDATE_DELAY);
-
             }
         }, HANDLER_DELAY);
-
     }
+
 
     private void initWidget() {
         mTextTitleSong = findViewById(R.id.text_title_song);
@@ -192,8 +193,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         mShuffle = findViewById(R.id.image_button_shuffle);
         mBack = findViewById(R.id.image_button_back);
         mDownload = findViewById(R.id.image_button_download);
-
-
         setEvenButton();
     }
 

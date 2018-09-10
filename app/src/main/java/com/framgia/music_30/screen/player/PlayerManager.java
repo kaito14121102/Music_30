@@ -25,7 +25,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     public PlayerManager(int position, ArrayList<Song> songs, MediaPlayer media) {
         if (songs != null) {
             mPosition = position;
-
             mSongs = songs;
             mMediaPlayer = media;
         }
@@ -70,7 +69,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                         getUrl(mSongs.get(mPosition).getUrlPlay(), APISoundCloud.PLAY_CLIENT_ID, BuildConfig.API_KEY).toString());
                 mMediaPlayer.prepare();
                 mMediaPlayer.setOnCompletionListener(this);
-
                 mMediaPlayer.start();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -146,4 +144,9 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         }
     }
 
+    public void downloadSong() {
+        mListener.downloadSong(StringUltil.getUrl(mSongs.get(mPosition).getUrlPlay(),
+                APISoundCloud.PLAY_CLIENT_ID, BuildConfig.API_KEY).toString(),
+                mSongs.get(mPosition).getTitle());
+    }
 }
