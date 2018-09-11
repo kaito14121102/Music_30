@@ -1,30 +1,24 @@
-package com.framgia.music_30.screen.home.fragment;
+package com.framgia.music_30.screen.home.fragment.genre;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Genre;
-import com.framgia.music_30.screen.home.HomeContract;
-import com.framgia.music_30.screen.home.HomePresenter;
 import com.framgia.music_30.screen.songgenre.SongGenreActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenreFragment extends Fragment implements GenreAdapter.OnItemClickListener, HomeContract.View {
-    private HomeContract.Presenter mPresenter;
+public class GenreFragment extends Fragment implements GenreAdapter.OnItemClickListener, GenreContract.View {
+    private GenreContract.Presenter mPresenter;
     private GenreAdapter mGenreAdapter;
 
     public static GenreFragment newInstance() {
@@ -47,7 +41,7 @@ public class GenreFragment extends Fragment implements GenreAdapter.OnItemClickL
     }
 
     @Override
-    public void setPresenter(HomeContract.Presenter presenter) {
+    public void setPresenter(GenreContract.Presenter presenter) {
         mPresenter = presenter;
     }
 

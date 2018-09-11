@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
 import com.framgia.music_30.data.source.SongRepository;
+import com.framgia.music_30.data.source.local.SongLocalDataSource;
 import com.framgia.music_30.data.source.remote.SongRemoteDataSource;
 import com.framgia.music_30.screen.player.PlayerActivity;
 import com.framgia.music_30.screen.player.PlayerSongService;
@@ -69,7 +70,8 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
 
     private void initData(String genre) {
         SongRemoteDataSource remoteDataSource = SongRemoteDataSource.getInstance();
-        SongRepository songRepository = SongRepository.getInstance(remoteDataSource);
+        SongLocalDataSource localDataSource = SongLocalDataSource.getInstance();
+        SongRepository songRepository = SongRepository.getInstance(remoteDataSource,localDataSource);
         SongGenrePresenter presenter = new SongGenrePresenter(songRepository);
         presenter.setView(this);
         presenter.getSong(genre);

@@ -65,8 +65,12 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
             }
             mMediaPlayer.reset();
             try {
-                mMediaPlayer.setDataSource(StringUltil.
-                        getUrl(mSongs.get(mPosition).getUrlPlay(), APISoundCloud.PLAY_CLIENT_ID, BuildConfig.API_KEY).toString());
+                if (mSongs.get(mPosition).getType().equals(Constant.TYPE_ONLINE)) {
+                    mMediaPlayer.setDataSource(StringUltil.
+                            getUrl(mSongs.get(mPosition).getUrlPlay(), APISoundCloud.PLAY_CLIENT_ID, BuildConfig.API_KEY).toString());
+                } else {
+                    mMediaPlayer.setDataSource(mSongs.get(mPosition).getUrlPlay());
+                }
                 mMediaPlayer.prepare();
                 mMediaPlayer.setOnCompletionListener(this);
                 mMediaPlayer.start();

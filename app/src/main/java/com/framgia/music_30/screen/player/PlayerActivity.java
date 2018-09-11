@@ -129,6 +129,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         mTextTitleSong.setText(song.getTitle());
         Picasso.with(this)
                 .load(song.getImageSong())
+                .error(R.drawable.zing)
                 .into(mImageSong);
         UpdateTimeSong();
     }

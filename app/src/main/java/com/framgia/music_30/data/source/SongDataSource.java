@@ -7,4 +7,8 @@ public interface SongDataSource {
     interface RemoteDataSource {
         void getData(String genre, OnFetchDataJsonListener<Song> listener);
     }
+
+    interface LocalDataSource {
+        void getData(OnFetchDataJsonListener<Song> listener);
+    }
 }

@@ -1,9 +1,8 @@
-package com.framgia.music_30.screen.home.fragment;
+package com.framgia.music_30.screen.home.fragment.genre;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
