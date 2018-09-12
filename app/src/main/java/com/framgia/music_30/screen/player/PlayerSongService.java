@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
@@ -40,8 +41,8 @@ public class PlayerSongService extends Service implements MediaListener, Service
         return intent;
     }
 
-    public static Intent getIntentBindService(Context context){
-        Intent intent = new Intent(context,PlayerSongService.class);
+    public static Intent getIntentBindService(Context context) {
+        Intent intent = new Intent(context, PlayerSongService.class);
         return intent;
     }
 
@@ -126,13 +127,13 @@ public class PlayerSongService extends Service implements MediaListener, Service
     }
 
     @Override
-    public int getTotalSong() {
-        return mManager.getTotalSong();
+    public int getCurrentSong() {
+        return mManager.getCurrentSong();
     }
 
     @Override
-    public int getCurrentSong() {
-        return mManager.getCurrentSong();
+    public int getTotalSong() {
+        return mManager.getTotalSong();
     }
 
     @Override
@@ -151,7 +152,7 @@ public class PlayerSongService extends Service implements MediaListener, Service
     }
 
     public Song getSongCurrent() {
-        return mSongs.get(mPosition);
+        return mManager.getSong();
     }
 
     public void setListener(OnMediaPlayerChangeListener listener) {

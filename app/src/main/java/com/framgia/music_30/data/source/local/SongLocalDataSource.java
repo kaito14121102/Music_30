@@ -24,7 +24,9 @@ public class SongLocalDataSource implements SongDataSource.LocalDataSource {
     @Override
     public void getData(OnFetchDataJsonListener<Song> listener) {
         ArrayList<Song> songs = getPlayList("sdcard/mymusic");
-        listener.onSucess(songs);
+        if (songs != null) {
+            listener.onSucess(songs);
+        }
     }
 
     public ArrayList<Song> getPlayList(String rootPath) {

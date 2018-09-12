@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.framgia.music_30.R;
@@ -57,7 +58,7 @@ public class MySongAdapter extends RecyclerView.Adapter<MySongAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mSongTitle;
-
+        private ImageView mImageSong;
         public ViewHolder(View itemView) {
             super(itemView);
             mSongTitle = itemView.findViewById(R.id.text_name_song);

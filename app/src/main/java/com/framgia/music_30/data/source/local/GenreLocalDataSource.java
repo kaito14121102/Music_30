@@ -25,12 +25,12 @@ public class GenreLocalDataSource implements GenreDataSource.Local {
     @Override
     public void getGenre(OnFetchDataJsonListener<Genre> listener) {
         ArrayList<Genre> genres = new ArrayList<>();
-        genres.add(new Genre(R.drawable.all_song, Constant.GENRE_ALL_MUSIC));
-        genres.add(new Genre(R.drawable.all_song, Constant.GENRE_ALL_AUDIO));
+        genres.add(new Genre(R.drawable.allmusic, Constant.GENRE_ALL_MUSIC));
+        genres.add(new Genre(R.drawable.allaudio, Constant.GENRE_ALL_AUDIO));
         genres.add(new Genre(R.drawable.classical, Constant.GENRE_CLASSICAL));
-        genres.add(new Genre(R.drawable.classical, Constant.GENRE_COUNTRY));
-        genres.add(new Genre(R.drawable.classical, Constant.GENRE_AMBIENT));
-        genres.add(new Genre(R.drawable.classical, Constant.GENRE_ALTERNATIVEROCK));
+        genres.add(new Genre(R.drawable.country, Constant.GENRE_COUNTRY));
+        genres.add(new Genre(R.drawable.ambient, Constant.GENRE_AMBIENT));
+        genres.add(new Genre(R.drawable.rock, Constant.GENRE_ALTERNATIVEROCK));
         listener.onSucess(genres);
     }
 }

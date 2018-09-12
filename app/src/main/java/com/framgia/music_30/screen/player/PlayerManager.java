@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PlayerManager implements MediaPlayer.OnCompletionListener {
+public class PlayerManager implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener {
     private ArrayList<Song> mSongs;
     private MediaPlayer mMediaPlayer;
     private OnMediaPlayerChangeListener mListener;
@@ -49,6 +49,15 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         }
     }
 
+    @Override
+    public void onPrepared(MediaPlayer mediaPlayer) {
+        mediaPlayer.start();
+        if (mListener != null) {
+            mListener.updateTimeTotal(mMediaPlayer.getDuration());
+            mListener.updateTimeSong();
+        }
+    }
+
     public void setListener(OnMediaPlayerChangeListener listener) {
         mListener = listener;
     }
@@ -71,9 +80,9 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                 } else {
                     mMediaPlayer.setDataSource(mSongs.get(mPosition).getUrlPlay());
                 }
-                mMediaPlayer.prepare();
+                mMediaPlayer.prepareAsync();
+                mMediaPlayer.setOnPreparedListener(this);
                 mMediaPlayer.setOnCompletionListener(this);
-                mMediaPlayer.start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -98,12 +107,16 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         playSong();
     }
 
+    public int getCurrentSong() {
+        return mMediaPlayer.getCurrentPosition();
+    }
+
     public int getTotalSong() {
         return mMediaPlayer.getDuration();
     }
 
-    public int getCurrentSong() {
-        return mMediaPlayer.getCurrentPosition();
+    public Song getSong() {
+        return mSongs.get(mPosition);
     }
 
     public void PauseAndPlaySong() {

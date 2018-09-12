@@ -17,7 +17,7 @@
         app:layout_constraintStart_toEndOf="@+id/image_button_back"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image_song"
         android:layout_width="@dimen/dp_300"
         android:layout_height="@dimen/dp_300"

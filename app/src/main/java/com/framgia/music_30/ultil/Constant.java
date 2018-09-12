@@ -28,4 +28,5 @@ public class Constant {
     public static final String NOTIFICATION_NEXT_EVENT = "next_event";
     public static final String MY_FOLDER = "mymusic";
     public static final String ORIGNAL_DIRECTORY = "sdcard/";
+    public static final int DOWNLOADED = 1;
 }

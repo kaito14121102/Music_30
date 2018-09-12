@@ -2,10 +2,13 @@ package com.framgia.music_30.screen.songgenre;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +29,10 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     public static final String SONG_LIST = "com.framgia.music_30.SONG_LIST";
     public static final String SONG_POSITION = "com.framgia.music_30.SONG_POSITION";
     private SongGenreAdapter mAdapter;
-    private TextView mTextGenre;
     private ArrayList<Song> mSongs;
-    private boolean mIsBound = false;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private Toolbar mToolbar;
+    private ImageView mImageGenre;
 
     public static Intent getGenreIntent(Context context, String typeGenre) {
         Intent intent = new Intent(context, SongGenreActivity.class);
@@ -40,6 +44,8 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_genre);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initViews();
         getTypeGenre();
     }
@@ -64,23 +70,28 @@ public class SongGenreActivity extends AppCompatActivity implements SongGenreCon
 
     private void getTypeGenre() {
         String genre = getIntent().getStringExtra(TYPE_GENRE);
-        mTextGenre.setText(genre);
+        if(genre.equals(R.string.GENRE_ALL_MUSIC)){
+            mCollapsingToolbarLayout.setTitle("All Music");
+            mImageGenre.setImageResource(R.drawable.allmusic);
+        }
         initData(genre);
     }
 
     private void initData(String genre) {
         SongRemoteDataSource remoteDataSource = SongRemoteDataSource.getInstance();
         SongLocalDataSource localDataSource = SongLocalDataSource.getInstance();
-        SongRepository songRepository = SongRepository.getInstance(remoteDataSource,localDataSource);
+        SongRepository songRepository = SongRepository.getInstance(remoteDataSource, localDataSource);
         SongGenrePresenter presenter = new SongGenrePresenter(songRepository);
         presenter.setView(this);
         presenter.getSong(genre);
     }
 
     private void initViews() {
+        mToolbar = findViewById(R.id.tool_bar);
+        mCollapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         mSongs = new ArrayList<>();
+        mImageGenre = findViewById(R.id.image_genre);
         RecyclerView recyclerViewGenre = findViewById(R.id.recycle_view_song);
-        mTextGenre = findViewById(R.id.text_genre);
         setupRecycler(recyclerViewGenre);
     }
 

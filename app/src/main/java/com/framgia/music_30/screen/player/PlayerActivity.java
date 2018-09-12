@@ -12,6 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -29,6 +33,8 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.text.SimpleDateFormat;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, OnMediaPlayerChangeListener {
     private static final String DATE_FORMAT = "mm:ss";
     private static final int UPDATE_DELAY = 500;
@@ -36,7 +42,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private TextView mTextTitleSong;
     private TextView mTextDuration;
     private TextView mTextDurationToal;
-    private ImageView mImageSong;
+    private CircleImageView mImageSong;
     private SeekBar mSeekBar;
     private ImageButton mBackWard;
     private ImageButton mForward;
@@ -48,6 +54,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private PlayerSongService mSongService;
     private Boolean mIsBound;
     private MediaListener mMediaListener;
+    private Handler mHandler;
+    private int isDownload = 0;
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -55,7 +63,9 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             mSongService = binder.getInstance();
             mSongService.setListener(PlayerActivity.this);
             mMediaListener = mSongService.newInstance();
-            updateSong(mSongService.getSongCurrent());
+            updateSong(mMediaListener.getSongCurrent());
+            updateTimeSong();
+            updateTimeTotal(mMediaListener.getTotalSong());
             mIsBound = true;
         }
 
@@ -117,7 +127,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.image_button_loop:
                 mMediaListener.loop();
             case R.id.image_button_download:
-                mMediaListener.downLoadSong();
+                if (isDownload == 0)
+                    mMediaListener.downLoadSong();
                 break;
             default:
                 break;
@@ -127,11 +138,18 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void updateSong(Song song) {
         mTextTitleSong.setText(song.getTitle());
-        Picasso.with(this)
-                .load(song.getImageSong())
-                .error(R.drawable.zing)
-                .into(mImageSong);
-        UpdateTimeSong();
+        if (song.getType().equals(Constant.TYPE_ONLINE)) {
+            Picasso.with(this)
+                    .load(song.getImageSong())
+                    .error(R.drawable.zing)
+                    .into(mImageSong);
+        } else {
+            mImageSong.setImageResource(R.drawable.musicplay);
+            mDownload.setImageResource(R.drawable.ic_arrow_downloaded_black_24dp);
+            isDownload = Constant.DOWNLOADED;
+        }
+        Animation animRotate = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        mImageSong.startAnimation(animRotate);
     }
 
     @Override
@@ -158,24 +176,26 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     public void downloadSong(String url, String name) {
         new SongDownload(this, name).execute(url);
         mDownload.setImageResource(R.drawable.ic_arrow_downloaded_black_24dp);
+        isDownload = Constant.DOWNLOADED;
     }
 
-    private void setTimeTotal() {
+    @Override
+    public void updateTimeTotal(int timetotal) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-        mTextDurationToal.setText(dateFormat.format(mSongService.getTotalSong()));
-        mSeekBar.setMax(mMediaListener.getTotalSong());
+        mTextDurationToal.setText(dateFormat.format(timetotal));
+        mSeekBar.setMax(timetotal);
     }
 
-    private void UpdateTimeSong() {
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+    @Override
+    public void updateTimeSong() {
+        mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
                 mTextDuration.setText(simpleDateFormat.format(mMediaListener.getCurrentSong()));
-                setTimeTotal();
                 mSeekBar.setProgress(mMediaListener.getCurrentSong());
-                handler.postDelayed(this, UPDATE_DELAY);
+                mHandler.postDelayed(this, UPDATE_DELAY);
             }
         }, HANDLER_DELAY);
     }
