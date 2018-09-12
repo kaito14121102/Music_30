@@ -2,7 +2,7 @@ package com.framgia.music_30.ultil;
 
 public class Constant {
     public static final String GENRE_ALL_MUSIC = "allmusic";
-    public static final String GENRE_ALL_AUDIO = "allaudio";
+    public static final String GENRE_ALL_AUDIO = "audio";
     public static final String GENRE_CLASSICAL = "classical";
     public static final String GENRE_COUNTRY = "country";
     public static final String GENRE_AMBIENT = "ambient";
@@ -28,4 +28,6 @@ public class Constant {
     public static final String NOTIFICATION_NEXT_EVENT = "next_event";
     public static final String MY_FOLDER = "mymusic";
     public static final String ORIGNAL_DIRECTORY = "sdcard/";
+    public static final int DOWNLOADED = 1;
+    public static final int REQUEST_PERMISSION_CODE = 123;
 }

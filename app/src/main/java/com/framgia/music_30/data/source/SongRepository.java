@@ -26,7 +26,11 @@ public class SongRepository {
         mSongRemoteDataSource.getData(genre, listener);
     }
 
-    public void getDataOffline(OnFetchDataJsonListener<Song> listener){
+    public void getDataOffline(OnFetchDataJsonListener<Song> listener) {
         mSongLocalDataSource.getData(listener);
+    }
+
+    public void getDataSearch(String textSearch, OnFetchDataJsonListener<Song> listener) {
+        mSongRemoteDataSource.getDataSearch(textSearch, listener);
     }
 }

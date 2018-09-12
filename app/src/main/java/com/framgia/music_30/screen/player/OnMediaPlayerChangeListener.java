@@ -13,5 +13,9 @@ public interface OnMediaPlayerChangeListener {
 
     void updatePlayPause(int type);
 
+    void updateTimeSong();
+
+    void updateTimeTotal(int timeTotal);
+
     void downloadSong(String url, String name);
 }

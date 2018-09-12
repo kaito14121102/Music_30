@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
@@ -40,8 +41,8 @@ public class PlayerSongService extends Service implements MediaListener, Service
         return intent;
     }
 
-    public static Intent getIntentBindService(Context context){
-        Intent intent = new Intent(context,PlayerSongService.class);
+    public static Intent getIntentBindService(Context context) {
+        Intent intent = new Intent(context, PlayerSongService.class);
         return intent;
     }
 
@@ -89,6 +90,7 @@ public class PlayerSongService extends Service implements MediaListener, Service
         Bundle bundle = intent.getExtras();
         mSongs = (ArrayList<Song>) bundle.getSerializable(SongGenreActivity.SONG_LIST);
         mPosition = intent.getIntExtra(SongGenreActivity.SONG_POSITION, 0);
+        Log.d("TAGG","service"+mPosition);
         mManager = new PlayerManager(mPosition, mSongs, mMediaPlayer);
         mManager.setServiceListener(this);
         mManager.playSong();
@@ -126,13 +128,13 @@ public class PlayerSongService extends Service implements MediaListener, Service
     }
 
     @Override
-    public int getTotalSong() {
-        return mManager.getTotalSong();
+    public int getCurrentSong() {
+        return mManager.getCurrentSong();
     }
 
     @Override
-    public int getCurrentSong() {
-        return mManager.getCurrentSong();
+    public int getTotalSong() {
+        return mManager.getTotalSong();
     }
 
     @Override
@@ -146,12 +148,17 @@ public class PlayerSongService extends Service implements MediaListener, Service
     }
 
     @Override
-    public void updateNotification(String titleSong) {
-        notification(titleSong);
+    public void updateNotification(String titleSong,int id) {
+        notification(titleSong,id);
     }
 
     public Song getSongCurrent() {
-        return mSongs.get(mPosition);
+        return mManager.getSong();
+    }
+
+    @Override
+    public boolean isClickButtonPlay() {
+        return mManager.isUpdateUI();
     }
 
     public void setListener(OnMediaPlayerChangeListener listener) {
@@ -163,7 +170,7 @@ public class PlayerSongService extends Service implements MediaListener, Service
         return this;
     }
 
-    public void notification(String titleSong) {
+    public void notification(String titleSong,int id) {
         Intent notificationIntent = new Intent(this, PlayerActivity.class);
         Intent intentBack = new Intent(Constant.NOTIFICATION_BACK_EVENT);
         Intent intentPause = new Intent(Constant.NOTIFICATION_PAUSE_EVENT);
@@ -173,14 +180,13 @@ public class PlayerSongService extends Service implements MediaListener, Service
         PendingIntent pendingIntentBack = PendingIntent.getBroadcast(getApplication(), REQUEST_CODE_NOTIFICATION, intentBack, 0);
         PendingIntent pendingIntentPause = PendingIntent.getBroadcast(getApplication(), REQUEST_CODE_NOTIFICATION, intentPause, 0);
         PendingIntent pendingIntentNext = PendingIntent.getBroadcast(getApplication(), REQUEST_CODE_NOTIFICATION, intentNext, 0);
-
         Notification notification =
                 new NotificationCompat.Builder(this, "a")
                         .setContentTitle(titleSong)
                         .setSmallIcon(R.drawable.zing)
                         .setContentIntent(pendingIntent)
                         .addAction(R.drawable.ic_skip_previous_black_24dp, "", pendingIntentBack)
-                        .addAction(R.drawable.ic_pause_black_24dp, "", pendingIntentPause)
+                        .addAction(id, "", pendingIntentPause)
                         .addAction(R.drawable.ic_skip_next_black_24dp, "", pendingIntentNext)
                         .build();
         startForeground(NOTIFICATION_ID, notification);

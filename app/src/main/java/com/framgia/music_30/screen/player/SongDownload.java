@@ -1,9 +1,13 @@
 package com.framgia.music_30.screen.player;
 
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
+
+import com.framgia.music_30.R;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -15,23 +19,31 @@ import java.net.URLConnection;
 
 public class SongDownload extends AsyncTask<String, Integer, String> {
     private Context mContext;
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
     private String mSongName;
+    private NotificationCompat.Builder mNotificationCompat;
+    private NotificationManager mNotificationManager;
 
     public SongDownload(Context context, String songName) {
         mContext = context;
         mSongName = songName;
+        mNotificationCompat = new NotificationCompat.Builder(mContext, "1")
+                .setContentTitle(mSongName)
+                .setContentText("Downloading.....")
+                .setSmallIcon(R.drawable.ic_arrow_downloaded_black_24dp);
+        mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog = new ProgressDialog(mContext);
-        progressDialog.setTitle("Download in progress...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setMax(100);
-        progressDialog.setProgress(0);
-        progressDialog.show();
+//        progressDialog = new ProgressDialog(mContext);
+//        progressDialog.setTitle("Download in progress...");
+//        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        progressDialog.setMax(100);
+//        progressDialog.setProgress(0);
+//        progressDialog.show();
     }
 
     @Override
@@ -66,12 +78,16 @@ public class SongDownload extends AsyncTask<String, Integer, String> {
     }
 
     protected void onProgressUpdate(Integer... progress) {
-        progressDialog.setProgress(progress[0]);
+//        progressDialog.setProgress(progress[0]);
+        mNotificationCompat.setProgress(100, progress[0], false);
+        mNotificationManager.notify(222, mNotificationCompat.build());
     }
 
     @Override
     protected void onPostExecute(String result) {
-        progressDialog.hide();
+//        progressDialog.hide();
         Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
+        mNotificationCompat.setContentTitle("Download Susscess");
+        mNotificationManager.notify(222, mNotificationCompat.build());
     }
 }

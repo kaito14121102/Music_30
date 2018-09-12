@@ -1,6 +1,10 @@
 package com.framgia.music_30.screen.player;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.util.Log;
 
 import com.framgia.music_30.BuildConfig;
 import com.framgia.music_30.R;
@@ -9,11 +13,12 @@ import com.framgia.music_30.ultil.APISoundCloud;
 import com.framgia.music_30.ultil.Constant;
 import com.framgia.music_30.ultil.StringUltil;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PlayerManager implements MediaPlayer.OnCompletionListener {
+public class PlayerManager implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnBufferingUpdateListener {
     private ArrayList<Song> mSongs;
     private MediaPlayer mMediaPlayer;
     private OnMediaPlayerChangeListener mListener;
@@ -21,6 +26,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     private int mPosition;
     private int mShuffle;
     private int mLoop;
+    private boolean isUpdateUi;
 
     public PlayerManager(int position, ArrayList<Song> songs, MediaPlayer media) {
         if (songs != null) {
@@ -49,6 +55,15 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         }
     }
 
+    @Override
+    public void onPrepared(MediaPlayer mediaPlayer) {
+        mediaPlayer.start();
+        if (mListener != null) {
+            mListener.updateTimeTotal(mMediaPlayer.getDuration());
+            mListener.updateTimeSong();
+        }
+    }
+
     public void setListener(OnMediaPlayerChangeListener listener) {
         mListener = listener;
     }
@@ -58,7 +73,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
     public void playSong() {
-        mServiceListener.updateNotification(mSongs.get(mPosition).getTitle());
+        mServiceListener.updateNotification(mSongs.get(mPosition).getTitle(), R.drawable.ic_pause_black_24dp);
         if (mMediaPlayer != null) {
             if (mMediaPlayer.isPlaying()) {
                 mMediaPlayer.pause();
@@ -70,10 +85,12 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                             getUrl(mSongs.get(mPosition).getUrlPlay(), APISoundCloud.PLAY_CLIENT_ID, BuildConfig.API_KEY).toString());
                 } else {
                     mMediaPlayer.setDataSource(mSongs.get(mPosition).getUrlPlay());
+                    isUpdateUi = true;
                 }
-                mMediaPlayer.prepare();
+                mMediaPlayer.prepareAsync();
+                mMediaPlayer.setOnPreparedListener(this);
+                mMediaPlayer.setOnBufferingUpdateListener(this);
                 mMediaPlayer.setOnCompletionListener(this);
-                mMediaPlayer.start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -81,11 +98,21 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
     public void nextSong() {
-        if (mPosition == mSongs.size() - 1) {
-            mPosition = 0;
-        } else mPosition++;
-        mListener.updateSong(mSongs.get(mPosition));
-        playSong();
+        if (mShuffle == Constant.SHUFFLE) {
+            mPosition = new Random().nextInt(mSongs.size() - 1);
+            mListener.updateSong(mSongs.get(mPosition));
+            playSong();
+        } else {
+            if (mPosition == mSongs.size() - 1) {
+                mPosition = 0;
+            } else mPosition++;
+            mListener.updateSong(mSongs.get(mPosition));
+            playSong();
+        }
+    }
+
+    public Boolean isUpdateUI () {
+        return isUpdateUi;
     }
 
     public void previousSong() {
@@ -98,12 +125,16 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         playSong();
     }
 
+    public int getCurrentSong() {
+        return mMediaPlayer.getCurrentPosition();
+    }
+
     public int getTotalSong() {
         return mMediaPlayer.getDuration();
     }
 
-    public int getCurrentSong() {
-        return mMediaPlayer.getCurrentPosition();
+    public Song getSong() {
+        return mSongs.get(mPosition);
     }
 
     public void PauseAndPlaySong() {
@@ -111,9 +142,11 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
             if (mMediaPlayer.isPlaying()) {
                 mMediaPlayer.pause();
                 mListener.updatePlayPause(R.drawable.ic_play_arrow_black_24dp);
+                mServiceListener.updateNotification(mSongs.get(mPosition).getTitle(), R.drawable.ic_play_arrow_black_24dp);
             } else {
                 mMediaPlayer.start();
                 mListener.updatePlayPause(R.drawable.ic_pause_black_24dp);
+                mServiceListener.updateNotification(mSongs.get(mPosition).getTitle(), R.drawable.ic_pause_black_24dp);
             }
         }
     }
@@ -152,5 +185,12 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         mListener.downloadSong(StringUltil.getUrl(mSongs.get(mPosition).getUrlPlay(),
                 APISoundCloud.PLAY_CLIENT_ID, BuildConfig.API_KEY).toString(),
                 mSongs.get(mPosition).getTitle());
+    }
+
+    @Override
+    public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
+        if (i > 0) {
+            isUpdateUi = true;
+        }
     }
 }

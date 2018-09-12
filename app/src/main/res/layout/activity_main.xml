@@ -14,7 +14,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/media_player"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/white">
+
+        <EditText
+            android:id="@+id/edit_search_song"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_30"
+            android:background="@drawable/search_music"
+            android:hint="search music"
+            android:paddingLeft="@dimen/dp_10"
+            android:textSize="@dimen/sp_15" />
+
+        <ImageButton
+            android:id="@+id/image_button_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:background="@null"
+            android:src="@drawable/ic_search_white_24dp" />
+    </android.support.v7.widget.Toolbar>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"

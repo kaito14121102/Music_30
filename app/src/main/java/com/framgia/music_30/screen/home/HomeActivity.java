@@ -1,10 +1,17 @@
 package com.framgia.music_30.screen.home;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.source.GenreRepository;
@@ -16,24 +23,39 @@ import com.framgia.music_30.screen.home.fragment.genre.GenreFragment;
 import com.framgia.music_30.screen.home.fragment.genre.GenrePresenter;
 import com.framgia.music_30.screen.home.fragment.mysong.MySongPresenter;
 import com.framgia.music_30.screen.home.fragment.mysong.MySongsFragment;
+import com.framgia.music_30.screen.search.SearchActivity;
 import com.framgia.music_30.ultil.Constant;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     private ViewPager mPager;
     private TabLayout mTabLayout;
     private GenreFragment mGenreFragment;
     private MySongsFragment mMySongsFragment;
+    private EditText mEditSearch;
+    private ImageButton mButtonSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        onRequestStoragePermisson();
         initWidget();
         initFragment();
         initViewPager();
         setUpTabIcon();
         initGenreData();
         initSongData();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.image_button_search:
+                if (!mEditSearch.equals("")) {
+                    startActivity(SearchActivity.getIntentSearch(HomeActivity.this, mEditSearch.getText().toString()));
+                }
+                break;
+        }
     }
 
     private void initFragment() {
@@ -50,18 +72,21 @@ public class HomeActivity extends AppCompatActivity {
     private void initSongData() {
         SongRemoteDataSource remoteDataSource = SongRemoteDataSource.getInstance();
         SongLocalDataSource localDataSource = SongLocalDataSource.getInstance();
-        SongRepository songRepository = SongRepository.getInstance(remoteDataSource,localDataSource);
-        MySongPresenter presenter = new MySongPresenter(mMySongsFragment,songRepository);
+        SongRepository songRepository = SongRepository.getInstance(remoteDataSource, localDataSource);
+        MySongPresenter presenter = new MySongPresenter(mMySongsFragment, songRepository);
     }
 
     private void initWidget() {
         mPager = findViewById(R.id.view_pager);
         mTabLayout = findViewById(R.id.tab_layout);
+        mEditSearch = findViewById(R.id.edit_search_song);
+        mButtonSearch = findViewById(R.id.image_button_search);
+        mButtonSearch.setOnClickListener(this);
     }
 
     private void initViewPager() {
         FragmentManager mManager = getSupportFragmentManager();
-        HomePagerAdapter mHomePagerAdapter = new HomePagerAdapter(mManager, this, mGenreFragment,mMySongsFragment);
+        HomePagerAdapter mHomePagerAdapter = new HomePagerAdapter(mManager, this, mGenreFragment, mMySongsFragment);
         mPager.setAdapter(mHomePagerAdapter);
         mTabLayout.setupWithViewPager(mPager);
         mPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
@@ -72,5 +97,15 @@ public class HomeActivity extends AppCompatActivity {
         mTabLayout.getTabAt(Constant.TAB_GENRE).setIcon(R.drawable.ic_album_black_24dp);
         mTabLayout.getTabAt(Constant.TAB_MYSONG).setIcon(R.drawable.ic_library_music_black_24dp);
         mTabLayout.getTabAt(Constant.TAB_ARTIST).setIcon(R.drawable.ic_person_black_24dp);
+    }
+
+    private void onRequestStoragePermisson() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    Constant.REQUEST_PERMISSION_CODE);
+        }
     }
 }

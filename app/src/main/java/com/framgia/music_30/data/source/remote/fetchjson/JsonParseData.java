@@ -40,7 +40,7 @@ public class JsonParseData {
         return stringBuilder.toString();
     }
 
-    public List<Song> parseJsonToData(String s) throws JSONException {
+    public List<Song> parseJsonToSongGenre(String s) throws JSONException {
         List<Song> songList = new ArrayList<>();
         JSONArray jsonArray = new JSONArray(s);
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -50,7 +50,23 @@ public class JsonParseData {
             String urlPlay = songJson.getString(Constant.STREAM_URL);
             String urlDownload = songJson.getString(Constant.DOWNLOAD_URL);
             String imageSong = songJson.getString(Constant.IMAGE_SONG);
-            songList.add(new Song(id,title, imageSong, urlPlay, urlDownload, Constant.TYPE_ONLINE));
+            songList.add(new Song(id, title, imageSong, urlPlay, urlDownload, Constant.TYPE_ONLINE));
+        }
+        return songList;
+    }
+
+    public List<Song> parseJsonToSongSearch(String s) throws JSONException {
+        List<Song> songList = new ArrayList<>();
+        JSONObject jsonObject = new JSONObject(s);
+        JSONArray jsonArray = jsonObject.getJSONArray("collection");
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject songJson = jsonArray.getJSONObject(i);
+            String id = songJson.getString(Constant.ID_SONG);
+            String title = songJson.getString(Constant.TITLE_SONG);
+            String urlPlay = songJson.getString(Constant.STREAM_URL);
+            String urlDownload = songJson.getString(Constant.DOWNLOAD_URL);
+            String imageSong = songJson.getString(Constant.IMAGE_SONG);
+            songList.add(new Song(id, title, imageSong, urlPlay, urlDownload, Constant.TYPE_ONLINE));
         }
         return songList;
     }

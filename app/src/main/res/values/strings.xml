@@ -5,7 +5,7 @@
     <string name="MYSONGS_TITLE">My Songs</string>
     <string name="ARTIST_TITLE">Artist</string>
     <string name="GENRE_ALL_MUSIC">allmusic</string>
-    <string name="GENRE_ALL_AUDIO">allaudio</string>
+    <string name="GENRE_ALL_AUDIO">audio</string>
     <string name="GENRE_CLASSICAL">classical</string>
     <string name="GENRE_COUNTRY">country</string>
     <string name="GENRE_AMBIENT">ambient</string>

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.framgia.music_30.R;
@@ -20,9 +21,9 @@ public class MySongAdapter extends RecyclerView.Adapter<MySongAdapter.ViewHolder
     private ArrayList<Song> mSongs;
     private OnItemClickListener mListener;
 
-    public MySongAdapter(Context context, ArrayList<Song> songs, OnItemClickListener listener) {
+    public MySongAdapter(Context context, OnItemClickListener listener) {
         mContext = context;
-        mSongs = songs;
+        mSongs = new ArrayList<>();
         mListener = listener;
     }
 
@@ -49,6 +50,7 @@ public class MySongAdapter extends RecyclerView.Adapter<MySongAdapter.ViewHolder
 
     public void addData(List<Song> songs) {
         if (songs != null) {
+            mSongs.clear();
             mSongs.addAll(songs);
             notifyDataSetChanged();
         }
@@ -57,6 +59,7 @@ public class MySongAdapter extends RecyclerView.Adapter<MySongAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mSongTitle;
+        private ImageView mImageSong;
 
         public ViewHolder(View itemView) {
             super(itemView);

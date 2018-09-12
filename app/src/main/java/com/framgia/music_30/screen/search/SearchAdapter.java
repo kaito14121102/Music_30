@@ -1,4 +1,4 @@
-package com.framgia.music_30.screen.songgenre;
+package com.framgia.music_30.screen.search;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,17 +11,19 @@ import android.widget.TextView;
 
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
+import com.framgia.music_30.screen.songgenre.SongGenreAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongGenreAdapter extends RecyclerView.Adapter<SongGenreAdapter.ViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<Song> mSongs;
-    private OnItemClickListener mListener;
+    private SearchAdapter.OnItemClickListener mListener;
 
-    public SongGenreAdapter(Context context, OnItemClickListener listener) {
+
+    public SearchAdapter(Context context, SearchAdapter.OnItemClickListener listener) {
         mContext = context;
         mSongs = new ArrayList<>();
         mListener = listener;
@@ -29,13 +31,13 @@ public class SongGenreAdapter extends RecyclerView.Adapter<SongGenreAdapter.View
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SearchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_song, null);
-        return new SongGenreAdapter.ViewHolder(mContext, view, mSongs, mListener);
+        return new SearchAdapter.ViewHolder(mContext, view, mSongs, mListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SearchAdapter.ViewHolder holder, int position) {
         holder.bindData(mSongs.get(position));
     }
 
@@ -45,10 +47,8 @@ public class SongGenreAdapter extends RecyclerView.Adapter<SongGenreAdapter.View
     }
 
     public void addData(List<Song> songs) {
-        if (songs != null) {
-            mSongs.addAll(songs);
-            notifyDataSetChanged();
-        }
+        mSongs.addAll(songs);
+        notifyDataSetChanged();
     }
 
     interface OnItemClickListener {
