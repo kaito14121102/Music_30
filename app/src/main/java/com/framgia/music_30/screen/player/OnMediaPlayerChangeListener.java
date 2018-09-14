@@ -7,6 +7,12 @@ public interface OnMediaPlayerChangeListener {
 
     void mediaError(Exception e);
 
+    void updateShuffle(int typeShuffle);
+
+    void updateLoop(int typeLoop);
+
+    void updatePlayPause(int type);
+
     void updateTimeSong();
 
     void updateTimeTotal(int timeTotal);

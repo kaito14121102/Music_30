@@ -1,11 +1,10 @@
 package com.framgia.music_30.screen.player;
-
 import android.content.ComponentName;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -40,6 +39,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private Boolean mIsBound;
     private MediaListener mMediaListener;
     private Handler mHandler;
+    private Boolean mDownloaded;
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -47,8 +47,9 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             mSongService = binder.getInstance();
             mSongService.setListener(PlayerActivity.this);
             mMediaListener = mSongService.newInstance();
-            updateSong(mSongService.getSongCurrent());
-            mMediaListener.playSong();
+            updateSong(mMediaListener.getSongCurrent());
+            updateTimeSong();
+            updateTimeTotal(mMediaListener.getTotalSong());
             mIsBound = true;
         }
 
@@ -63,8 +64,13 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         initWidget();
-        bindService(PlayerSongService.getIntentBindService(this), mConnection, PlayerActivity.BIND_AUTO_CREATE);
         evenSeekBar();
+    }
+
+    @Override
+    protected void onStart() {
+        bindService(PlayerSongService.getIntentBindService(this), mConnection, PlayerActivity.BIND_AUTO_CREATE);
+        super.onStart();
     }
 
     private void evenSeekBar() {
@@ -93,7 +99,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_button_pause:
-                mMediaListener.pauseSong();
+                if (mMediaListener.isClickButtonPlay())
+                    mMediaListener.pauseSong();
                 break;
             case R.id.image_button_forward:
                 mMediaListener.nextSong();
@@ -105,8 +112,10 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.image_button_shuffle:
+                mMediaListener.shuffle();
                 break;
             case R.id.image_button_loop:
+                mMediaListener.loop();
                 break;
             case R.id.image_button_download:
                 break;
@@ -121,13 +130,32 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         if (song.getType().equals(Constant.TYPE_ONLINE)) {
             Picasso.with(this)
                     .load(song.getImageSong())
+                    .error(R.drawable.zing)
                     .into(mImageSong);
+        } else {
+            mImageSong.setImageResource(R.drawable.musicplay);
+            mDownload.setImageResource(R.drawable.ic_arrow_downloaded_black_24dp);
         }
     }
 
     @Override
     public void mediaError(Exception e) {
         Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void updateShuffle(int typeShuffle) {
+        mShuffle.setImageResource(typeShuffle);
+    }
+
+    @Override
+    public void updateLoop(int typeLoop) {
+        mLoop.setImageResource(typeLoop);
+    }
+
+    @Override
+    public void updatePlayPause(int type) {
+        mPause.setImageResource(type);
     }
 
     @Override
@@ -150,7 +178,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             }
         }, HANDLER_DELAY);
     }
-
 
     private void initWidget() {
         mTextTitleSong = findViewById(R.id.text_title_song);
