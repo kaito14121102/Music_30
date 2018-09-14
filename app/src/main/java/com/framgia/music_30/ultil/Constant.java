@@ -23,4 +23,10 @@ public class Constant {
     public static final int NONE_LOOP = 2;
     public static final int NONE_SHUFFLE = 0;
     public static final int SHUFFLE = 1;
+    public static final String NOTIFICATION_BACK_EVENT = "back_event";
+    public static final String NOTIFICATION_PAUSE_EVENT = "pause_event";
+    public static final String NOTIFICATION_NEXT_EVENT = "next_event";
+    public static int REQUEST_CODE_NOTIFICATION = 123;
+    public static int NOTIFICATION_ID = 1337;
+    public static String CHANEL_ID = "CHANEL_ID";
 }

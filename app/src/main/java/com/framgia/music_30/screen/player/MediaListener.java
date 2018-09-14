@@ -21,6 +21,8 @@ public interface MediaListener {
 
     void updateSeekBar(int position);
 
+    void downLoadSong();
+
     Song getSongCurrent();
 
     boolean isClickButtonPlay();

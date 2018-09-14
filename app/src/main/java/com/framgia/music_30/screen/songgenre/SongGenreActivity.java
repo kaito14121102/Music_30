@@ -1,10 +1,7 @@
 package com.framgia.music_30.screen.songgenre;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +16,6 @@ import com.framgia.music_30.data.source.remote.SongRemoteDataSource;
 import com.framgia.music_30.screen.player.PlayerActivity;
 import com.framgia.music_30.screen.player.PlayerSongService;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import com.framgia.music_30.BuildConfig;
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.model.Song;
+import com.framgia.music_30.screen.player.OnMediaPlayerChangeListener;
 import com.framgia.music_30.ultil.APISoundCloud;
 import com.framgia.music_30.ultil.Constant;
 import com.framgia.music_30.ultil.StringUltil;
@@ -17,6 +18,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener, MediaPla
     private ArrayList<Song> mSongs;
     private MediaPlayer mMediaPlayer;
     private OnMediaPlayerChangeListener mListener;
+    private ServiceListener mServiceListener;
     private int mPosition;
     private int mShuffle;
     private int mLoop;
@@ -62,7 +64,12 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener, MediaPla
         mListener = listener;
     }
 
+    public void setServiceListener(ServiceListener serviceListener) {
+        mServiceListener = serviceListener;
+    }
+
     public void playSong() {
+        mServiceListener.updateNotification(mSongs.get(mPosition).getTitle(), R.drawable.ic_pause_black_24dp);
         if (mMediaPlayer != null) {
             if (mMediaPlayer.isPlaying()) {
                 mMediaPlayer.pause();
@@ -87,6 +94,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener, MediaPla
     }
 
     public void nextSong() {
+        mIsUpdateUi = false;
         if (mShuffle == Constant.SHUFFLE) {
             mPosition = new Random().nextInt(mSongs.size() - 1);
             mListener.updateSong(mSongs.get(mPosition));
@@ -107,6 +115,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener, MediaPla
     }
 
     public void previousSong() {
+        mIsUpdateUi = false;
         if (mPosition == 0) {
             mPosition = mSongs.size() - 1;
         } else {
@@ -133,9 +142,11 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener, MediaPla
             if (mMediaPlayer.isPlaying()) {
                 mMediaPlayer.pause();
                 mListener.updatePlayPause(R.drawable.ic_play_arrow_black_24dp);
+                mServiceListener.updateNotification(mSongs.get(mPosition).getTitle(), R.drawable.ic_play_arrow_black_24dp);
             } else {
                 mMediaPlayer.start();
                 mListener.updatePlayPause(R.drawable.ic_pause_black_24dp);
+                mServiceListener.updateNotification(mSongs.get(mPosition).getTitle(), R.drawable.ic_pause_black_24dp);
             }
         }
     }
