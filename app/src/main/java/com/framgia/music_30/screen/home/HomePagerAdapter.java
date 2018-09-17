@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.framgia.music_30.R;
-import com.framgia.music_30.screen.home.fragment.GenreFragment;
+import com.framgia.music_30.screen.home.fragment.genre.GenreFragment;
 import com.framgia.music_30.screen.home.fragment.ArtistFragment;
 import com.framgia.music_30.screen.home.fragment.MySongsFragment;
 import com.framgia.music_30.ultil.Constant;

@@ -9,12 +9,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.framgia.music_30.R;
 import com.framgia.music_30.data.source.GenreRepository;
 import com.framgia.music_30.data.source.local.GenreLocalDataSource;
-import com.framgia.music_30.screen.home.fragment.GenreFragment;
+import com.framgia.music_30.screen.home.fragment.genre.GenreFragment;
+import com.framgia.music_30.screen.home.fragment.genre.GenrePresenter;
 import com.framgia.music_30.ultil.Constant;
 
 public class HomeActivity extends AppCompatActivity {
@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
     private void initData() {
         GenreLocalDataSource localDataSource = GenreLocalDataSource.getInstance();
         GenreRepository genreRepository = GenreRepository.getInstance(localDataSource);
-        HomePresenter presenter = new HomePresenter(mGenreFragment, genreRepository);
+        GenrePresenter presenter = new GenrePresenter(mGenreFragment, genreRepository);
     }
 
     private void initWidget() {

@@ -1,20 +1,16 @@
-package com.framgia.music_30.screen.home;
-
-import android.util.Log;
+package com.framgia.music_30.screen.home.fragment.genre;
 
 import com.framgia.music_30.data.model.Genre;
-import com.framgia.music_30.data.model.Song;
 import com.framgia.music_30.data.source.GenreRepository;
 import com.framgia.music_30.data.source.remote.OnFetchDataJsonListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class HomePresenter implements HomeContract.Presenter {
-    private HomeContract.View mView;
+public class GenrePresenter implements GenreContract.Presenter {
+    private GenreContract.View mView;
     private GenreRepository mGenreRepository;
 
-    public HomePresenter(HomeContract.View view, GenreRepository genreRepository) {
+    public GenrePresenter(GenreContract.View view, GenreRepository genreRepository) {
         mView = view;
         mGenreRepository = genreRepository;
         mView.setPresenter(this);
